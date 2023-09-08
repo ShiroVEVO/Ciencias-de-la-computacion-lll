@@ -1,10 +1,10 @@
 # Ciencias de la computacion lll
 
-Universidad Distrital Francisco José de Caldas  
-Proyecto Curricular de Ingeniería de Sistemas
+Ingeniería de Sistemas - Universidad Distrital Francisco José de Caldas  
 
-**Asignatura:** Ciencias de la Computación II  
-**Profesor:** Santiago Salazar Fajardo
+**Asignatura:** Ciencias de la Computación III
+
+**Profesor:** Christian Acosta Cipagauta
 
 ---
 
