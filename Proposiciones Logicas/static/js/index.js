@@ -14,7 +14,6 @@ function borrarUltimo(){
 }
 
 formulario.addEventListener('submit', e=>{
-    //console.log("submit");
     e.preventDefault();
 
     const data = new FormData();
@@ -29,25 +28,26 @@ formulario.addEventListener('submit', e=>{
         if(contentType && contentType.indexOf("application/json") !== -1){
             return response.json();
         } else {
-            console.log("La respuesta no es un JSON perro");
+            console.log("La respuesta no es un JSON AhHhHhH");
         }
     }).catch((error) =>{
         console.log("Hubo un error con la petición Fetch en RESPONSE" + error);
     }).then((data) => {
-        //console.log(data)
         document.getElementById("solucion").style.display = "flex";
-        mensaje = "<h3>Solución</h3><br>" + data["tabla"] + "<br>"
+        mensaje = "<h3>Solución</h3>Preposición:<b> " + data["tabla"] + "</b><br>"
+        mensaje += "<p>Variables: <b>"+data["variables"]+"</b></p>";
+        mensaje += "<p>Parentesis: <b>"+data["parentesis"]+"</b></p>";
+        mensaje += "<p>Operadores: <b>"+data["operadores"]+"</b></p>";
         if(data["valoracion"]=='Tautology')
-            mensaje += "<p><b>Tatuología</b></p>";
+            null;//mensaje += "<p><b>Tatuología</b></p>";
         else if(data["valoracion"]=='Contingency')
-            mensaje += "<p><b>Contingencía</b></p>";
+            null;//mensaje += "<p><b>Contingencía</b></p>";
         else if(data["valoracion"]=='Contradiction')
-            mensaje += "<p><b>Contradicción</b></p>";
-        //console.log(mensaje);
-        //alert("Se agrego "+ document.getElementById("name").value);
+            null;//mensaje += "<p><b>Contradicción</b></p>";
         document.getElementById('solucion').innerHTML = mensaje
-        //location.reload();
     }).catch((error) =>{
-        console.log("Hubo un error con la petición Fetch en DATA" + error);
+        document.getElementById("solucion").style.display = "flex";
+        mensaje = "<b>Preposición invalida</b>";
+        document.getElementById('solucion').innerHTML = mensaje
     })
 })

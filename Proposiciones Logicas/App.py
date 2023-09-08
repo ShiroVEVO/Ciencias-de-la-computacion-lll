@@ -6,10 +6,8 @@ class Mensaje:
     message = ''
     records = []    
 
-
 # inicializacion
-app = Flask(__name__)
-
+app = Flask(__name__, static_folder='static', template_folder='templates')
 
 # routes
 @app.route('/calculadora-logica')
@@ -20,15 +18,12 @@ def Index():
 @app.route('/solvePreposition', methods=['POST'])
 def solvePreposition():    
     if request.method == 'POST':
-        print("hey")
         preposicion = request.form['prep']
         print("preposición: " + preposicion)
         resultados = calculadora.mostrar_resultado(preposicion)
         print(resultados)
         return jsonify(resultados)
     return jsonify(message = 'Error en add')
-
-
 
 # inicio de la app
 if __name__ == "__main__":
