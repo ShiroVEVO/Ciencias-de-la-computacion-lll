@@ -1,3 +1,5 @@
+import separador
+
 Codigo = []
 
 with open('archivo.c', 'r') as archivo:
@@ -6,6 +8,9 @@ with open('archivo.c', 'r') as archivo:
         if linea:
             Codigo.append(linea)
     for linea in Codigo:
+
+        separador.separadorEspacios()
+
         #Codigo para palabras reservadas
 
         #Codigo para Identificadores
