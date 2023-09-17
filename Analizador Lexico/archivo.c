@@ -1,10 +1,10 @@
 #include <stdio.h>
 
-int suma(int a, int b) {
+int suma(int a, int b){
     return a + b;
 }
 
-int maximo(int a, int b) {
+int maximo(int a, int b){
     return (a > b) ? a : b;
 }
 

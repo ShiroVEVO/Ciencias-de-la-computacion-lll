@@ -1,6 +1,7 @@
-import separador
+import separador as s
 
 Codigo = []
+tokens = []
 
 with open('archivo.c', 'r') as archivo:
     for linea in archivo:
@@ -9,17 +10,9 @@ with open('archivo.c', 'r') as archivo:
             Codigo.append(linea)
     for linea in Codigo:
 
-        separador.separadorEspacios()
-
-        #Codigo para palabras reservadas
-
-        #Codigo para Identificadores
+        tokens.extend(s.separador(linea))
 
         #Codigo para Comentarios
-
-        #Codigo para Numeros enteros
-
-        #Codigo para Numeros flotantes
 
         #Codigo para Simbolos especiales
 
@@ -34,4 +27,6 @@ with open('archivo.c', 'r') as archivo:
         #Codigo para declarar funciones?
 
         #Codigo para parametros?
-        print("linea: " + linea)            
+        #print("linea: " + linea)
+
+print (tokens)
