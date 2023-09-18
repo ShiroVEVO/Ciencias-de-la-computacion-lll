@@ -1,13 +1,6 @@
 import tokens as t
+import recursos as r
 
-def encontrar_elemento_igual(lista, valor):
-    for elemento in lista:
-        if elemento[0] == valor:
-            return True
-    return False
-
-# Solo distingue entre palabras reservadas, identificadores, operadores y número enteros y flotantes :3
-# No tiene en cuenta los espacios
 def separador(cadena):
     tokens = []
     i = 0
@@ -23,9 +16,11 @@ def separador(cadena):
         elif cadena[i] != " ":
             if i+1 < len(cadena) and not (cadena[i+1].isalpha() or cadena[i+1].isdigit()) and cadena[i+1] != " ":
                 i, token = t.obtener_categoria_operador(cadena[i:i+2], i)
-                if encontrar_elemento_igual(token, 'NO ES OPERADOR'):
-                    print('token')
-                    i, token = t.obtener_categoria_operador(cadena[i-1], i)
+                if r.buscar_elemento(token, 0, 'NO ES TOKEN'):
+                    i -= 1
+                    i, token = t.obtener_categoria_operador(cadena[i], i)
+                    i -= 1
+                i += 1
             else:
                 i, token = t.obtener_categoria_operador(cadena[i], i)
             tokens.append(token)

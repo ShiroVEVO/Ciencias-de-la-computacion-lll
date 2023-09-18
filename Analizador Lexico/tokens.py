@@ -5,13 +5,19 @@ palabras_reservadas = ['auto', 'break', 'case', 'char', 'const', 'continue', 'de
 
 op_asignacion = ['=', '+=', '-=', '*=', '/=', '&=']
 
-op_matematicos = ['+', '-', '*', '/']
+op_matematico = ['+', '-', '*', '/', '%']
 
-op_logicos = ['&&', '||', '!']
+op_logico = ['&&', '||', '!']
 
 op_comparacion = ['++', '--', '==', '!=', '<', '>', '<=', '>=']
 
-simbolos_especiales = ['(', ')', '[', ']', '#']
+sim_especial = ['(', ')', '[', ']', '#', '{', '}']
+
+comentario = ['//', '/*', '*/']
+
+l_cadena = ['"']
+
+puntuador = ['.', ';', ',', ':']
 
 def obtener_pReservadas(cadena, i):
     j = i
@@ -19,14 +25,14 @@ def obtener_pReservadas(cadena, i):
         j += 1
     for elemento in palabras_reservadas:
         if elemento == cadena[i:j]:
-            return j, ['PALABRA RESERVADA', cadena[i:j]]
+            return j, [['PALABRA RESERVADA'], [cadena[i:j]]]
     return obtener_identificador(cadena, i)
 
 def obtener_identificador(cadena, i):
     j = i
     while j < len(cadena) and (cadena[j].isalpha() or cadena[j].isdigit()):
         j += 1
-    return j, ['IDENTIFICADOR', cadena[i:j]]
+    return j, [['IDENTIFICADOR'], [cadena[i:j]]]
 
 #Solo distingue entre entero y flotante
 def obtener_numero(cadena, i):
@@ -44,32 +50,37 @@ def obtener_numero(cadena, i):
         j += 1
 
     if punto_decimal and parte_decimal:
-        return j, ['NUMERO FLOTANTE', cadena[i:j]]
+        return j, [['NUMERO FLOTANTE'], [cadena[i:j]]]
     else:
-        return j, ['NUMERO ENTERO', cadena[i:j]]
+        return j, [['NUMERO ENTERO'], [cadena[i:j]]]
 
 #Tal vez un método que puede clasificar cada uno de los operadores diferente
 def obtener_operador(cadena, nlista, i):
     j = i + 1
     if nlista == 0:
-        return j, ['OPERADOR ASIGNACIÓN', cadena]
+        return j, [['OPERADOR ASIGNACIÓN'], [cadena]]
     elif nlista == 1:
-        return j, ['OPERADOR MATEMÁTICO', cadena]
+        return j, [['OPERADOR MATEMÁTICO'], [cadena]]
     elif nlista == 2:
-        return j, ['OPERADOR LÓGICO', cadena]
+        return j, [['OPERADOR LÓGICO'], [cadena]]
     elif nlista == 3:
-        return j, ['OPERADOR COMPARACIÓN', cadena]
+        return j, [['OPERADOR COMPARACIÓN'], [cadena]]
     elif nlista == 4:
-        return j, ['SIMBOLO ESPECIAL', cadena]
+        return j, [['SÍMBOLO ESPECIAL'], [cadena]]
+    elif nlista == 5:
+        return j, [['COMENTARIO'], [cadena]]
+    elif nlista == 6:
+        return j, [['LITERAL DE CADENA'], [cadena]]
     else:
-        return j, ['ERROR', cadena]
+        return j, [['CARÁCTER PUNTUACIÓN'], [cadena]]
+
 
 def obtener_categoria_operador(cadena, i):
-    operadores = [op_asignacion, op_matematicos, op_logicos, op_comparacion, simbolos_especiales]
+    operadores = [op_asignacion, op_matematico, op_logico, op_comparacion, sim_especial, comentario, l_cadena, puntuador]
     for nlista, lista in enumerate(operadores):
         if cadena in lista:
             return obtener_operador(cadena, nlista, i)
-    return i+1, ['NO ES OPERADOR', cadena]
+    return i+1, [['NO ES TOKEN'], [cadena]]
 
 
 

@@ -1,4 +1,5 @@
 import separador as s
+import recursos as r
 
 Codigo = []
 tokens = []
@@ -9,24 +10,10 @@ with open('archivo.c', 'r') as archivo:
         if linea:
             Codigo.append(linea)
     for linea in Codigo:
-
         tokens.extend(s.separador(linea))
 
-        #Codigo para Comentarios
+for clave, valor in r.contar_elemento(tokens, 0).items():
+    print(f"{clave}: {valor}")
 
-        #Codigo para Simbolos especiales
-
-        #Codigo para operadores logicos
-
-        #Codigo para operadores matematicos
-
-        #Codigo para operadores de comparacion
-
-        #Codigo para cadenas
-
-        #Codigo para declarar funciones?
-
-        #Codigo para parametros?
-        #print("linea: " + linea)
-
-print (tokens)
+#for elemento in tokens:
+#    print (elemento)
