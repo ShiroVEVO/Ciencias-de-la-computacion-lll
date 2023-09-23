@@ -3,12 +3,14 @@ from Analizador_Lexico import Separador as s
 from Recursos import ArbolSintaxisAbstracta as asa
 from Analizador_Sintactico import AnalizadorSintactico as analizadors
 
+from Analizador_Sintactico import misValidaciones as mV
+
 #---------------- PRUEBAS ANALIZADOR LEXICO --------------------
 tokens = []
-codigo = r.leer_archivo('Compilador/archivo.c')
+codigo = r.leer_archivo('../Compilador/archivo.c')
 i = 0
 
-"""for i, elemento in enumerate(codigo):
+'''for i, elemento in enumerate(codigo):
     print ("Elemento: #" + str(i) +", " + elemento)
 
 
@@ -19,7 +21,7 @@ for clave, valor in r.contar_elemento(tokens, 0).items():
 for linea in codigo:
       tokens.extend(s.separador(linea))
 for elemento in tokens:
-   print (elemento)"""
+   print (elemento)'''
 
 #-------------- PRUEBAS ANALIZADOR SINTACTICO ------------------
 """
@@ -30,5 +32,9 @@ for elemento in x:
 """
 
 x = asa.crear_asa_programa(codigo)
-asa.imprimir_asa(x)
+#asa.imprimir_asa(x)
+if (mV.procesar_elemento(x)):
+    print("Hola")
+else:
+    print("No hola")
 
