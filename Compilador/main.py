@@ -27,13 +27,7 @@ print("---- pila ----", "\n")
 for elemento in x:
      print(elemento)
 """
-tokens = [[['SÍMBOLO ESPECIAL'], ['#']],
-[['IDENTIFICADOR'], ['include']],
-[['OPERADOR COMPARACIÓN'], ['<']],
-[['IDENTIFICADOR'], ['stdio']],
-[['CARÁCTER PUNTUACIÓN'], ['.']],
-[['IDENTIFICADOR'], ['h']],
-[['OPERADOR COMPARACIÓN'], ['>']]]
-x = analizadors.crear_asa(tokens)
+
+x = analizadors.crear_asa_mamadisimo(codigo)
 analizadors.imprimir_asa(x)
 
