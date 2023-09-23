@@ -1,5 +1,6 @@
-from Analizador_Lexico import separador as s
-from Recursos import pila as pila
+from Analizador_Lexico import Separador as s
+from Recursos import Pila as pila
+from Recursos import Nodo as nodo
 
 """
 validar_bloque:
@@ -29,3 +30,29 @@ def validar_bloque(codigo, num_linea, cadena):
         return pi
     else:               #si lo encontro y es valido, devuelve la pila con las lineas involucradas
         return pi
+
+def crear_asa(tokens):
+    raiz = nodo.Nodo("linea")
+    nodo_actual = raiz
+    pi = pila.Pila()
+    pi.apilar(raiz);
+    for token in tokens: 
+        nodo_actual.agregar_hijo(nodo(token))
+        """
+        if token[1][0] == "{":
+            nuevo_nodo = nodo.Nodo(token)
+            nodo_actual.agregar_hijo(nuevo_nodo)
+       
+            pila.apilar(nuevo_nodo)
+            nodo_actual = nuevo_nodo
+        elif token == "}":
+            pila.desapilar()
+            nodo_actual = pila[-1]
+        else:
+            nodo_actual.agregar_hijo(nodo(token))
+    return raiz"""
+
+def imprimir_asa(nodo, profundidad=0):
+    print("  " * profundidad + nodo.value)
+    for child in nodo.hijos:
+        imprimir_asa(child, profundidad + 1)

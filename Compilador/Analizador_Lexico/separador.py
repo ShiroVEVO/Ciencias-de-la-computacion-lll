@@ -1,5 +1,5 @@
-import Analizador_Lexico.tokens as t
-import Recursos.recursos as r
+import Analizador_Lexico.Tokens as t
+import Recursos.Recursos as r
 
 def separador(cadena):
     tokens = []
