@@ -5,3 +5,13 @@ class Nodo:
 
     def agregar_hijo(self, hijo):
         self.hijos.append(hijo)
+    
+    def get_hijos(self):
+        return self.hijos
+    
+    def ultimo_hijo(self):
+        if self.hijos:
+            ultimo_hijo = self.hijos[-1]
+            return ultimo_hijo
+        else:
+            return None

@@ -29,3 +29,70 @@ def validar_bloque(codigo, num_linea, cadena):
         return pi
     else:               #si lo encontro y es valido, devuelve la pila con las lineas involucradas
         return pi
+
+"""validar__punto_y_coma:
+
+recibe la raiz del arbol (ARBOL DE UNA LINEA) y verifica que su ultimo elemento sea un ;"""
+
+def validar_punto_y_coma(raiz):
+    if raiz.ultimo_hijo().valor[1][0] == ';':
+        return True
+    else: 
+        return False
+
+""" validar_estructura:
+
+Recibe una lista de hijos de un nodo raiz, es decir, una lista de nodos cuyo valor se espera
+sea de la forma de un token:
+    [['CATEGORIA'],['valor']]
+y tambien recibe una estructura (una lista de categorias de la fomra ['CATEGORIA','CATEGORIA',...,'CATEGORIA'])
+la cual debe corresponder con la sucesión de categorias que tienen cada uno de los hijos. 
+Podria decirse que es un metodo que análiza "gramaticas libres de contexto" pero solo en singular
+no recibiría plurales de las categorias"""
+
+def validar_estructura(estructura, hijos):
+    es_valido = False
+    if len(hijos) < len(estructura):
+        return es_valido
+    elif len(hijos) > len(estructura):
+        return es_valido
+    else:
+        for i in range(len(estructura)-1):
+            if estructura[i] != hijos[i].valor[0][0]:
+                return es_valido
+            else:
+                return not es_valido
+    
+"""validar_tipo_de_dato_variable:
+
+recibe un nodo que se espera sea un nodo del tipo [['PALABRA RESERVADA'],['x']] y comprueba que dentro de la lista
+de palabras reservadas esta 'x' sea un tipo de dato nativo de C"""
+
+def validar_tipo_de_dato_variable(nodo):
+    es_valido = False
+    if nodo.valor[1][0] != 'char' and  nodo.valor[1][0] != 'double' and nodo.valor[1][0] != 'float' and nodo.valor[1][0] != 'int' and nodo.valor[1][0] != 'long' and nodo.valor[1][0] != 'short':
+        return es_valido
+    else:
+        return not es_valido
+
+"""validar_declaracion_variable:
+
+valida la DECLARACIÓN DE UNA VARIABLE, es decir, una linea en C del tipo:
+    'PALABRA RESERVADA','IDENTIFICADOR','CARÁCTER PUNTUACIÓN'
+para ello usa esa misma estructura (Que bien podriamos llamar gramatica libre de contexto), y los metodos
+anteriormente definidos (validación del ;, validación del tipo de dato y validación de la estructura), si 
+alguna de esas validaciones falla, entonces no comprueba lo demás y regresa que no es valido."""
+
+def validar_declaracion_variable(raiz):
+    es_valido = False
+    estructura = ['PALABRA RESERVADA','IDENTIFICADOR','CARÁCTER PUNTUACIÓN']
+    hijos = raiz.get_hijos() 
+
+    if not validar_punto_y_coma(raiz):
+        return es_valido
+    elif not validar_estructura(estructura, hijos):
+        return es_valido
+    elif not validar_tipo_de_dato_variable(raiz):
+        return es_valido
+    else:
+        return not es_valido
