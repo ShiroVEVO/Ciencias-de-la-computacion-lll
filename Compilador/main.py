@@ -1,5 +1,6 @@
 from Recursos import Recursos as r
 from Analizador_Lexico import Separador as s
+from Recursos import ArbolSintaxisAbstracta as asa
 from Analizador_Sintactico import AnalizadorSintactico as analizadors
 
 #---------------- PRUEBAS ANALIZADOR LEXICO --------------------
@@ -28,6 +29,6 @@ for elemento in x:
      print(elemento)
 """
 
-x = analizadors.crear_asa_mamadisimo(codigo)
-analizadors.imprimir_asa(x)
+x = asa.crear_asa_programa(codigo)
+asa.imprimir_asa(x)
 
