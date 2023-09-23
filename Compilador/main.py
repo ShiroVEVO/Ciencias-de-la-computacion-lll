@@ -33,7 +33,7 @@ for elemento in x:
 #x = asa.crear_asa_programa(codigo)
 #asa.imprimir_asa(x)
 
-tokens =[[['PALABRA RESERVADA'], ['pipipipi']],
+tokens =[[['PALABRA RESERVADA'], ['char']],
      [['IDENTIFICADOR'], ['aweqwqa']],
      [['CARÁCTER PUNTUACIÓN'], [';']]
      ]

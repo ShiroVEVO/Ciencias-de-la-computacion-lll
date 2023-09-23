@@ -51,7 +51,7 @@ Podria decirse que es un metodo que análiza "gramaticas libres de contexto" per
 no recibiría plurales de las categorias"""
 
 def validar_estructura(estructura, hijos):
-    es_valido = False
+    es_valido = True
     if len(hijos) < len(estructura):
         return es_valido
     elif len(hijos) > len(estructura):
@@ -59,9 +59,9 @@ def validar_estructura(estructura, hijos):
     else:
         for i in range(len(estructura)-1):
             if estructura[i] != hijos[i].valor[0][0]:
-                return es_valido
-            else:
                 return not es_valido
+            else:
+                return es_valido
     
 """validar_tipo_de_dato_variable:
 
@@ -69,11 +69,11 @@ recibe un nodo que se espera sea un nodo del tipo [['PALABRA RESERVADA'],['x']] 
 de palabras reservadas esta 'x' sea un tipo de dato nativo de C"""
 
 def validar_tipo_de_dato_variable(nodo):
-    es_valido = False
+    es_valido = True
     if nodo.valor[1][0] != 'char' and  nodo.valor[1][0] != 'double' and nodo.valor[1][0] != 'float' and nodo.valor[1][0] != 'int' and nodo.valor[1][0] != 'long' and nodo.valor[1][0] != 'short':
-        return es_valido
-    else:
         return not es_valido
+    else:
+        return es_valido
 
 """validar_declaracion_variable:
 
@@ -84,15 +84,15 @@ anteriormente definidos (validación del ;, validación del tipo de dato y valid
 alguna de esas validaciones falla, entonces no comprueba lo demás y regresa que no es valido."""
 
 def validar_declaracion_variable(raiz):
-    es_valido = False
+    es_valido = True
     estructura = ['PALABRA RESERVADA','IDENTIFICADOR','CARÁCTER PUNTUACIÓN']
     hijos = raiz.get_hijos() 
 
     if not validar_punto_y_coma(raiz):
-        return es_valido
-    elif not validar_estructura(estructura, hijos):
-        return es_valido
-    elif not validar_tipo_de_dato_variable(raiz):
+        return not es_valido
+    elif not validar_tipo_de_dato_variable(hijos[0]):
+        return not es_valido
+    #elif not validar_estructura(estructura, hijos):
         return es_valido
     else:
-        return not es_valido
+        return es_valido
