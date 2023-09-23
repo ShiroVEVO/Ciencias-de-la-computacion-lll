@@ -6,7 +6,7 @@ from Recursos import Nodo as nodo
 
 #---------------- PRUEBAS ANALIZADOR LEXICO --------------------
 tokens = []
-codigo = r.leer_archivo('Compilador/archivo.c')
+codigo = r.leer_archivo('../Compilador/archivo.c')
 i = 0
 
 """for i, elemento in enumerate(codigo):
@@ -33,10 +33,10 @@ for elemento in x:
 #x = asa.crear_asa_programa(codigo)
 #asa.imprimir_asa(x)
 
-tokens =[[['PALABRA RESERVADA'], ['pipipipi']],
+'''tokens =[[['PALABRA RESERVADA'], ['pipipipi']],
      [['IDENTIFICADOR'], ['aweqwqa']],
      [['CARÁCTER PUNTUACIÓN'], [';']]
      ]
 raiz = asa.crear_asa_linea(tokens)
-print(analizadors.validar_declaracion_variable(raiz))
+print(analizadors.validar_declaracion_variable(raiz))'''
 
