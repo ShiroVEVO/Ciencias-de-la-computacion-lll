@@ -2,6 +2,7 @@ from Recursos import Recursos as r
 from Analizador_Lexico import Separador as s
 from Recursos import ArbolSintaxisAbstracta as asa
 from Analizador_Sintactico import AnalizadorSintactico as analizadors
+from Recursos import Nodo as nodo
 
 #---------------- PRUEBAS ANALIZADOR LEXICO --------------------
 tokens = []
@@ -29,6 +30,13 @@ for elemento in x:
      print(elemento)
 """
 
-x = asa.crear_asa_programa(codigo)
-asa.imprimir_asa(x)
+#x = asa.crear_asa_programa(codigo)
+#asa.imprimir_asa(x)
+
+tokens =[[['PALABRA RESERVADA'], ['pipipipi']],
+     [['IDENTIFICADOR'], ['aweqwqa']],
+     [['CARÁCTER PUNTUACIÓN'], [';']]
+     ]
+raiz = asa.crear_asa_linea(tokens)
+print(analizadors.validar_declaracion_variable(raiz))
 
