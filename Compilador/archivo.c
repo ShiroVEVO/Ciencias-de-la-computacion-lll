@@ -3,10 +3,17 @@ int suma(int a,int b){
     return a+b;
 }
 int maximo(int a, int b){
-    return (a > b) ? a : b;
+    if(a > b){
+        return a;
+    }else{
+        return b;
+    }
 }
+
 void imprimirSerie(int inicio, int fin) {
-    for (int i=inicio; i<=fin; i++) {    printf("%d ",i);
+    for (int i=inicio;
+    i<=fin;
+    i++) {    printf("%d ",i);
     }
     printf("\n");
 }
@@ -16,10 +23,10 @@ int main() {
 
     // Utilizar la función suma
     int resultado_suma = suma(num1, num2);
-    printf("La suma de %d y %d es %d\n", num1, num2, resultado_suma);
+    printf("La suma de " + num1 + " y " + num2 + "es " + resultado_suma);
 
     int max = maximo(num1, num2);
-    printf("El máximo entre %d y %d es %d\n", num1, num2, max);
+    printf("El máximo entre " + 1 + " y " + num2 + "es " + max);
     /*
         Se usa la funcion imprimirSerie
         todo dentro de un comentario

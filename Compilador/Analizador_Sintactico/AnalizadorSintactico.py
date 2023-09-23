@@ -34,6 +34,7 @@ def validar_bloque(codigo, num_linea, cadena):
 
 recibe la raiz del arbol (ARBOL DE UNA LINEA) y verifica que su ultimo elemento sea un ;"""
 
+#Validar un elemento 
 def validar_punto_y_coma(raiz):
     if raiz.ultimo_hijo().valor[1][0] == ';':
         return True
@@ -92,7 +93,49 @@ def validar_declaracion_variable(raiz):
         return not es_valido
     elif not validar_tipo_de_dato_variable(hijos[0]):
         return not es_valido
-    #elif not validar_estructura(estructura, hijos):
+    elif not validar_estructura(estructura, hijos):
         return es_valido
     else:
         return es_valido
+    
+def validar_asignación(raiz):
+    """
+    puede ser de la forma: 
+    TIPO IDENTIFICADOR = NUMERO/CADENA  ----    X
+    IDENTIFICADOR = FUNCIÓN(PARAMETROS)
+    IDENTIFICADOR = IDENTIFICADOR OPERADOR IDENTIFICADOR
+    o una combinación de varios de estos 
+    """
+    es_valido = True
+    estructuraA = ['IDENTIFICADOR','OPERADOR ASIGNACIÓN','NUMERO FLOTANTE']
+
+
+
+
+
+
+    estructuraB = ['IDENTIFICADOR','OPERADOR ASIGNACIÓN','NUMERO ENTERO']
+    estructuraC = ['IDENTIFICADOR','OPERADOR ASIGNACIÓN','LITERAL DE CADENA']
+    estructuraD = ['IDENTIFICADOR','OPERADOR ASIGNACIÓN','IDENTIFICADOR','OPERADOR MATEMÁTICO','IDENTIFICADOR']
+
+    hijos = raiz.get_hijos() 
+    if not validar_punto_y_coma(raiz):
+        return not es_valido
+    
+    else:
+        return es_valido
+
+"""
+
+
+1. MODIFICACION DEL SEPARADOR O DEL LECTOR PARA NO PERMITIR DOS LINEAS EN UNA MISMA (EXCEPTO EN EL FOR)
+2. Alterar la funcion de ; para que reciba la existencia de cualquier elemento 
+3. atomica de operacion matematica "IDENTIFICADOR OPERADOR MATEMATICO IDENTIFICADOR"
+4. atomica de parametros "TIPO IDENTIFICADOR" = declaracion variable
+5. atomica de condicion "IDENTIFICADOR OPERADOR LOGICO IDENTIFICADOR"
+6. atomica condicion 2 "IDENTIFICADOR OPERADOR COMPARACIÓN IDENTIFICADOR"
+7. atomica incremental decremental ++ -- += -= =+ =-
+8. Atomica de argumentos argumento + argumento" (Print, argumento como identificador, cadena)
+9. atomica de argumentos 2 "Argumento, Argumento" (con tipos de argumento para funciones generales)
+
+"""

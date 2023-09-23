@@ -53,3 +53,4 @@ def imprimir_asa(nodo, profundidad=0):
     print("  " * profundidad, nodo.valor) #imprime el valor del nodo raiz
     for hijo in nodo.hijos: # por cada uno de los hijos del nodo raiz se invoca a si mismo aumentando la profundidad en 1
         imprimir_asa(hijo, profundidad + 1)
+    

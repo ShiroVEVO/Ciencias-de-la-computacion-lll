@@ -29,14 +29,14 @@ print("---- pila ----", "\n")
 for elemento in x:
      print(elemento)
 """
-
 #x = asa.crear_asa_programa(codigo)
 #asa.imprimir_asa(x)
 
+"""
 tokens =[[['PALABRA RESERVADA'], ['char']],
      [['IDENTIFICADOR'], ['aweqwqa']],
      [['CARÁCTER PUNTUACIÓN'], [';']]
      ]
 raiz = asa.crear_asa_linea(tokens)
-print(analizadors.validar_declaracion_variable(raiz))
+print(analizadors.validar_declaracion_variable(raiz))"""
 
