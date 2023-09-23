@@ -37,7 +37,7 @@ def crear_asa(tokens):
     pi = pila.Pila()
     pi.apilar(raiz);
     for token in tokens: 
-        nodo_actual.agregar_hijo(nodo(token))
+        nodo_actual.agregar_hijo(nodo.Nodo(token))
         """
         if token[1][0] == "{":
             nuevo_nodo = nodo.Nodo(token)
@@ -49,10 +49,10 @@ def crear_asa(tokens):
             pila.desapilar()
             nodo_actual = pila[-1]
         else:
-            nodo_actual.agregar_hijo(nodo(token))
-    return raiz"""
+            nodo_actual.agregar_hijo(nodo(token))"""
+    return raiz
 
 def imprimir_asa(nodo, profundidad=0):
-    print("  " * profundidad + nodo.value)
-    for child in nodo.hijos:
-        imprimir_asa(child, profundidad + 1)
+    print("  " * profundidad, " ", nodo.valor)
+    for hijo in nodo.hijos:
+        imprimir_asa(hijo, profundidad + 1)

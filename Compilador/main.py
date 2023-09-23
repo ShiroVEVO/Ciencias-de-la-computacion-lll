@@ -34,5 +34,6 @@ tokens = [[['SÍMBOLO ESPECIAL'], ['#']],
 [['CARÁCTER PUNTUACIÓN'], ['.']],
 [['IDENTIFICADOR'], ['h']],
 [['OPERADOR COMPARACIÓN'], ['>']]]
-#analizadors.crear_asa(tokens)
+x = analizadors.crear_asa(tokens)
+analizadors.imprimir_asa(x)
 
