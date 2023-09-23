@@ -4,15 +4,15 @@ from Recursos import ArbolSintaxisAbstracta as asa
 from Analizador_Sintactico import AnalizadorSintactico as analizadors
 from Recursos import Nodo as nodo
 
+from Analizador_Sintactico import misValidaciones as mV
+
 #---------------- PRUEBAS ANALIZADOR LEXICO --------------------
 tokens = []
-codigo = r.leer_archivo('Compilador/archivo.c')
+codigo = r.leer_archivo('../Compilador/archivo.c')
 i = 0
 
-"""for i, elemento in enumerate(codigo):
+'''for i, elemento in enumerate(codigo):
     print ("Elemento: #" + str(i) +", " + elemento)
-
-
 
 for clave, valor in r.contar_elemento(tokens, 0).items():
    print(f"{clave}: {valor}")
@@ -20,7 +20,7 @@ for clave, valor in r.contar_elemento(tokens, 0).items():
 for linea in codigo:
       tokens.extend(s.separador(linea))
 for elemento in tokens:
-   print (elemento)"""
+   print (elemento)'''
 
 #-------------- PRUEBAS ANALIZADOR SINTACTICO ------------------
 """
@@ -30,13 +30,15 @@ for elemento in x:
      print(elemento)
 """
 
-#x = asa.crear_asa_programa(codigo)
-#asa.imprimir_asa(x)
+x = asa.crear_asa_programa(codigo)
+'''asa.imprimir_asa(x)
 
 tokens =[[['PALABRA RESERVADA'], ['char']],
      [['IDENTIFICADOR'], ['aweqwqa']],
      [['CARÁCTER PUNTUACIÓN'], [';']]
      ]
 raiz = asa.crear_asa_linea(tokens)
-print(analizadors.validar_declaracion_variable(raiz))
+print(analizadors.validar_declaracion_variable(raiz))'''
+
+mV.recorrer_arbol(x)
 
