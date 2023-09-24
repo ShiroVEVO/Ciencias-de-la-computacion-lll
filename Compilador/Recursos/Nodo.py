@@ -3,6 +3,9 @@ class Nodo:
         self.valor = valor
         self.hijos = []
 
+    def __len__(self):
+        return len(self.hijos)
+    
     def agregar_hijo(self, hijo):
         self.hijos.append(hijo)
     
