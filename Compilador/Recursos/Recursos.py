@@ -43,7 +43,6 @@ def leer_archivo(ruta_archivo):
             linea = linea.strip(); # omite espacios iniciales y finales
             if ";" in linea:
                 linea = linea.replace(";", ";@")
-                print("ah!" + linea)
                 lineas = linea.split("@")
                 for linea in lineas:
                     if linea:

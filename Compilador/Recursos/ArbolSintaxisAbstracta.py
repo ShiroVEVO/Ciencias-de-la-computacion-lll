@@ -54,6 +54,17 @@ def imprimir_asa(nodo, profundidad=0):
     for hijo in nodo.hijos: # por cada uno de los hijos del nodo raiz se invoca a si mismo aumentando la profundidad en 1
         imprimir_asa(hijo, profundidad + 1)
 
+def crear_nodo_padre(raiz,inicio,final,valor):
+    hijos = raiz.get_hijos()
+    nodo_padre = nodo.Nodo(valor)
+    nodos_a_mover = raiz.hijos[inicio:final + 1]
+    for x in nodos_a_mover:
+        nodo_padre.agregar_hijo(x)
+    raiz.hijos[inicio:final + 1] = []
+    raiz.hijos.insert(inicio, nodo_padre)
+    return raiz
+#
+#
 #--------------------------------------------MI AVANCE--------------------------------------------
 """
 Crea un ASA a partir de una lista de tokens. Este me ayuda a validar una cadena completa, ya que el arbol 

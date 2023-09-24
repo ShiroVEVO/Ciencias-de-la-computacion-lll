@@ -1,32 +1,16 @@
 from Analizador_Lexico import Separador as s
 from Recursos import Pila as pila
 from Recursos import Nodo as nodo
+from Recursos import ArbolSintaxisAbstracta as asa
 
 """
-cariño!!!, creo que me equivoqué, no siempre se necesitarán los arboles como parametro, en ocasiones podemos pasar solo algunos
-hijos, es decir partecitas especificas del arbol, Mira el metodo de validar_operación_matematica y piensa lo siguiente, Si te paso
-la linea
-
-int a = b + c;
-
-el arbol llamado "raiz" seria tooooda la linea, pero las partes más atómicas como la operación matematica no necesitan toda la linea
-sino solo unos hijos de esta...
-        ///(Los hijos son una lista de nodos cuyo valor es de la forma [['CATEGORIA_TOKEN'],[VALOR_LEXEMA]])////
-que vendrian siendo el "b+c". Ahora bien, el otro lado del igual el "int a" se debe validar con el atomico
-de "declaración" que sigue la gramatica [TIPO, IDENTIFICADOR].
-Y la linea en su conjunto se validará con el "validar linea asignación, quien será el que invoque los metodos para validar tanto
-el "int a" como el "b + c".
-En conclusión en ocasiones los metodos más pequeñitos, que validan las cosas más atomicas pueden simplemente recibir una lista con
-los hijos necesarios. solo las validaciones más generales recibiran la linea entera. 
-
-
 1. (HECHO) MODIFICACION DEL SEPARADOR O DEL LECTOR PARA NO PERMITIR DOS LINEAS EN UNA MISMA (EXCEPTO EN EL FOR)
 2. (HECHO) Alterar la funcion de ; para que reciba la existencia de cualquier elemento 
 3. (HECHO) atomica de operacion matematica "IDENTIFICADOR OPERADOR MATEMATICO IDENTIFICADOR"
 4. (HECHO) atomica de (parametros/Declaracion Variable) "TIPO IDENTIFICADOR"
-5. (HECHO, DISCUTIBLE)atomica comparacion "IDENTIFICADOR/NUMEROS/CADENAS... OPERADOR COMPARACIÓN (lo mismo de antes del operador)
-    para la 5. no hay que quitar el ++ -- de operadores de comparación?? Ya cree otra cateogia, pero solo con esos dos
-6. (Chale...)atomica de condicion "comparacion/identificador OPERADOR LOGICO comparacion/identificador" (Como manejamos el !??)
+5. (HECHO) atomica comparacion "IDENTIFICADOR/NUMEROS/CADENAS... OPERADOR COMPARACIÓN (lo mismo de antes del operador)
+6. (HECHO) atomica de condicion "comparacion/identificador OPERADOR LOGICO comparacion/identificador" 
+        SALVO EL...(Como manejamos el !??)
 7. atomica incremental decremental ++ -- += -= =+ =-
 8. (HECHO, aunque lo mismo de comparación) Atomica de argumentos "argumento + " (Print, argumento como identificador, cadena)
 9. (HECHO, aunque lo mismo de comparación) Atomica de argumentos 2 "Argumento ," (con tipos de argumento para funciones generales)
@@ -61,7 +45,6 @@ def validar_bloque(codigo, num_linea, cadena):
     else:  # si lo encontro y es valido, devuelve la pila con las lineas involucradas
         return pi
 
-
 """validar_caracter:
 
 Recibe:
@@ -70,7 +53,6 @@ Recibe:
 y Busca en el arbol de la linea si alguno de los hijos es el caracter buscado, Si lo encuentra
 devuelve un True si no lo encuentra devuelve un False."""
 
-
 def validar_caracter(raiz, caracter):
     existe = False
     hijos = raiz.get_hijos()
@@ -78,7 +60,6 @@ def validar_caracter(raiz, caracter):
         if hijo.valor[1][0] == caracter:
             existe = True
     return existe
-
 
 """validar_estructura:
 
@@ -107,7 +88,6 @@ segundo espacio habrá 1 posibilidad, y en la lista del tercer espacio habran 3 
 las 7 gramaticas posibles y evaluar cada una con un metodo simple de estructura como lista, en su lugar solo manejamos 
 una multilista y excluimos esas 2 posibilidades erroneas en el validador especifico de las operaciones matematicas"""
 
-
 def validar_estructura(estructura, hijos):
     es_valido = True
     if len(hijos) != len(estructura):
@@ -124,130 +104,79 @@ def validar_estructura(estructura, hijos):
                 break
     return es_valido
 
+"""validar_operacion_matematica: (ACTUALIZADO A NODO PAPA)
 
-"""validar_operacion_matematica:
+Recibe un arbol raiz (Se espera que sea el arbol de una linea), un indice (Numero del hijo donde
+inicia la operación matematica) y un rango (donde termina la operación matematica) tomando esos 
+hijos valida las posibles combinaciones para una  operación matematica es decir, que tenga un 
+operador matematico en la mitad y que a ambos lados de ellos tenga Identificador, Numero Entero, 
+Numero flotante u otra operación matematica (a +-*/% b) Excluyendo las combinaciones donde se 
+intentan operar Numeros flotantes con Numeros enteros. al encontrarla crea un nodo papa de 
+"Operación matematica" y los nodos hijos de raiz que se involucran con esta operación pasan a 
+ser hijos del nodo papa.
+"""
 
-Recibe unos "hijos" (lista de nodos cuyo valor son tokens) y valida las posibles combinaciones para una 
-operación matematica es decir, que tenga un operador matematico en la mitad y que a ambos lados de ellos
-tenga Identificador, Numero Entero o Numero flotante, Excluyendo las combinaciones donde se intentan operar
-Numeros flotantes con Numeros enteros."""
-
-
-def validar_operacion_matematica(hijos):
-    es_valido = True
-    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE'], ['OPERADOR MATEMÁTICO'],
-                  ['IDENTIFICADOR', 'NUMERO FLOTANTE', 'NUMERO ENTERO']]
+def validar_operacion_matematica(raiz, inicial, final):
+    hijos = raiz.hijos[inicial:final + 1]
+    valor_papa = [['OPERACIÓN MATEMATICA'],['']]
+    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE','OPERACIÓN MATEMATICA'],
+                  ['OPERADOR MATEMÁTICO'],
+                  ['IDENTIFICADOR', 'NUMERO FLOTANTE', 'NUMERO ENTERO','OPERACIÓN MATEMATICA']]
     if validar_estructura(estructura, hijos):
         if ((hijos[0].valor[0][0] == 'NUMERO FLOTANTE' and hijos[2].valor[0][0] == 'NUMERO ENTERO') or (
                 hijos[0].valor[0][0] == 'NUMERO ENTERO' and hijos[2].valor[0][0] == 'NUMERO FLOTANTE')):
-            return not es_valido
+            return None
         else:
-            return es_valido
+           return asa.crear_nodo_padre(raiz,inicial,final,valor_papa) 
     else:
-        return not es_valido
+        return None
 
-
-"""validar_declaracion_variable_parametros:
+"""validar_declaracion_variable_parametros: (ACTUALIZADO A NODO PAPA)
 
 Recibe unos "hijos" (lista de nodos cuyo valor son tokens) y valida que estos tengan la estructura
 PALABRA RESERVADA - IDENTIFICADOR, Si cumple con ello luego evalua si la palabra reservada
 es un tipo de dato, si no lo es, regresa un False, si lo es Regresa un True"""
 
-
-def validar_declaracion_variable_parametros(hijos):
+def validar_declaracion_variable_parametros(raiz,inicial,final):
+    hijos = raiz.hijos[inicial:final + 1]
     es_valido = True
+    valor_papa = [['DECLARACIÓN VARIABLE/PARAMETROS'],['']]
     estructura = [['PALABRA RESERVADA'], ['IDENTIFICADOR']]
     if validar_estructura(estructura, hijos):
-        print("Aja!")
         if hijos[0].valor[1][0] != 'char' and hijos[0].valor[1][0] != 'double' and hijos[0].valor[1][0] != 'float' and \
                 hijos[0].valor[1][0] != 'int' and hijos[0].valor[1][0] != 'long' and hijos[0].valor[1][0] != 'short':
-            return not es_valido
+            return None
         else:
-            return es_valido
+            return asa.crear_nodo_padre(raiz,inicial,final,valor_papa)
     else:
-        print("Aiñ!")
-        return not es_valido
+        return None
 
-
-"""validar_comparacion:
+"""validar_comparacion: (ACTUALIZADO A NODO PAPA)
 Recibe unos "hijos" (lista de nodos cuyo valor son tokens) y valida que estos tengan
 la estructura de un atomico de comparación basico, es decir que tengan un operador
 de comparación en la mitad, y a ambos lados de este tengan un identificador (sea de
-variable o de función, un numero entero, un numero flotante o una cadena).
+variable o de función, un numero entero, un numero flotante o una cadena)."""
 
-POR AHORA, excluye los operadores de comparación ++ y -- porqué creo que no se usan
-en ninguna comparación =-= pero no estoy seguro, lo hablamos luego, besos en las nalgas JAJAJAJAJA"""
-
-
-def validar_comparacion(hijos):
-    es_valido = True
-    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'LITERAL DE CADENA'],
+def validar_comparacion(raiz, inicial, final):
+    hijos = raiz.hijos[inicial:final + 1]
+    valor_papa = [['COMPARACIÓN'],['']]
+    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'LITERAL DE CADENA','COMPARACIÓN'],
                   ['OPERADOR COMPARACIÓN'],
-                  ['IDENTIFICADOR', 'NUMERO FLOTANTE', 'NUMERO ENTERO', 'LITERAL DE CADENA']]
+                  ['IDENTIFICADOR', 'NUMERO FLOTANTE', 'NUMERO ENTERO', 'LITERAL DE CADENA','COMPARACIÓN']]
     if validar_estructura(estructura, hijos):
-        return es_valido
+        return asa.crear_nodo_padre(raiz,inicial,final,valor_papa)
     else:
-        return not es_valido
+        return None
 
-
-def validar_condicion(raiz):  # comparacion/identificador OPERADOR LOGICO comparacion/identificador
-    es_valido = True
-    estructura = [['IDENTIFICADOR'], ['OPERADOR LÓGICO'], ['IDENTIFICADOR']]
-    """
-        Me acabo de dar cuenta de la utilidad de los nodos intermedios JAJAJAJA
-        Si empaquetamos los atomicos que ya validamos bajo una nueva etiqueta, es decir un nuevo nodo, que se
-        convierta en un intermediario podemos usarlo aquí para validar con la estructura
-
-        Se me ocurre crear un metodo en nodo.py... que "empaquete" unos nodos bajo un nuevo alias, como si fuese un nuevo "token"
-        y que se convierta en un nodo papa entre la raiz y los hijos el cual podemos usar y llamamos ese metodo 
-        en cada uno de los metodos que ya hice que son SI son atomicos para asi comparar facilmente... algo como:
-
-        ESTOOOO
-        linea <- NODO RAIZ
-            [['IDENTIFICADOR'],['a']] <- NODOS HIJOS de aqui para abajo...
-            [['OPERADOR COMPARACIÓN'],['>=']]
-            [['IDENTIFICADOR'],['b']]
-            [['OPERADOR LOGICO'], [&&]]
-            [['IDENTIFICADOR'],['a']]
-            [['OPERADOR COMPARACIÓN'],['!=']]
-            [['IDENTIFICADOR'],['b']]
-        
-        PASA A ESTOOO!
-
-        linea <- NODO RAIZ, Ahora le dire abuelo
-            [['COMPARACIÓN'],['']] <- Nodo PAPA creado por el metodo
-                [['IDENTIFICADOR'],['a']] <- Nodos Hijos del papa
-                [['OPERADOR COMPARACIÓN'],['>=']]
-                [['IDENTIFICADOR'],['b']]
-            [['OPERADOR LOGICO'], [&&]] <- Nodo sin papa JAJAJA
-            [['COMPARACIÓN'],['']] <- Papa 2
-                [['IDENTIFICADOR'],['a']] <- Nodos Hijos del papa 2
-                [['OPERADOR COMPARACIÓN'],['!=']]
-                [['IDENTIFICADOR'],['b']]
-
-        Lo expliqué lo mejor que pude... porque ya son las 8:46 y me vas a dar nalgadas de las malas...
-        Hablamos mañana :3 sorry por dejarte las alteraciones más hardcore :((
-    """
-    return None
-
-
-# --------------------------------------------------- HASTA AQUÍ LLEGA EL CODIGO UTIL-------------
-
-""" 
-validar_tipo_de_dato_variable:
-
-recibe un nodo que se espera sea un nodo del tipo [['PALABRA RESERVADA'],['x']] y comprueba que dentro de la lista
-de palabras reservadas esta 'x' sea un tipo de dato nativo de C
-
-def validar_tipo_de_dato_variable(nodo):
-    es_valido = True
-    if nodo.valor[1][0] != 'char' and  nodo.valor[1][0] != 'double' and nodo.valor[1][0] != 'float' and nodo.valor[1][0] != 'int' and nodo.valor[1][0] != 'long' and nodo.valor[1][0] != 'short':
-        return not es_valido
+def validar_condicion(raiz, inicial,final):
+    hijos = raiz.hijos[inicial:final + 1]
+    estructura = [['IDENTIFICADOR','COMPARACIÓN'], ['OPERADOR LÓGICO'], ['IDENTIFICADOR','COMPARACIÓN']]
+    valor_papa = [['CONDICIÓN'],['']]
+    if validar_estructura(estructura, hijos):
+        return asa.crear_nodo_padre(raiz,inicial,final,valor_papa)
     else:
-        return es_valido
-
-    
-"""
+        asa.imprimir_asa(raiz)
+        return None
 
 # ----------------------------AQUÍ EMPIEZA MI CODIGO------------------------------
 """validar_argumentos normales:
@@ -261,7 +190,7 @@ variable o de función, un numero entero, un numero flotante o una cadena).
 def validar_argumentos(hijos):
     es_valido = True
     estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE'], ['CARÁCTER PUNTUACIÓN']]
-    print()
+    print(hijos[0].valor)
     if validar_estructura(estructura, hijos) or hijos[0].valor == "cadena":
         if len(hijos) == 1:
             return es_valido

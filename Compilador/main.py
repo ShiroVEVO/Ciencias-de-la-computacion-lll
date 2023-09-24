@@ -5,11 +5,10 @@ from Analizador_Sintactico import AnalizadorSintactico as analizadors
 from Recursos import Nodo as nodo
 
 # ---------------- PRUEBAS ANALIZADOR LEXICO --------------------
-"""
-tokens = []
 codigo = r.leer_archivo('Compilador/archivo.c')
+tokens = []
 i = 0
-
+"""
 for i, elemento in enumerate(codigo):
    print ("Elemento: #", str(i), ", ", elemento)
 for clave, valor in r.contar_elemento(tokens, 0).items():
@@ -21,9 +20,11 @@ for linea in codigo:
 for elemento in tokens:
    print (elemento)
 """
-"""
+
+
 #-------------- PRUEBAS ANALIZADOR SINTACTICO ------------------
 
+"""
 x = analizadors.validar_bloque(codigo,1,"}")
 
 #print("---- pila ----", "\n")
@@ -32,43 +33,74 @@ x = analizadors.validar_bloque(codigo,1,"}")
 
 x = asa.crear_asa_linea(codigo)
 asa.imprimir_asa(x)
-
 """
 
-"""
+
 #----------------- 1. Pruebas Operación matematica
-
+"""
 tokens = [[['NUMERO ENTERO'], ['aweqwqa']],
          [['OPERADOR MATEMÁTICO'], ['+']],
          [['IDENTIFICADOR'], ['pipipi']]]
 
 x = asa.crear_asa_linea(tokens) 
-print("La operación matematica es: ", analizadors.validar_operacion_matematica(x.get_hijos()))
+y = analizadors.validar_operacion_matematica(x,0,2)
+if(y != None):
+    print("La operación matematica es valida ahora el arbol es: ")
+    asa.imprimir_asa(y)
+else: 
+   print("La operación matematica es invalida")
 """
 
-"""
 #----------------- 2. Pruebas declaración variable o parametros
 
+"""
 tokens = [[['PALABRA RESERVADA'], ['int']],
-         [['IDENTIFICADO'], ['a']]]
+         [['IDENTIFICADOR'], ['a']]]
 x = asa.crear_asa_linea(tokens) 
-print("La declaración es: ", analizadors.validar_declaracion_variable_parametros(x.get_hijos()))
+y = analizadors.validar_declaracion_variable_parametros(x,0,1)
+if(y != None):
+    print("La declaración de parametros o variable es valida, ahora el arbol es: ")
+    asa.imprimir_asa(y)
+else: 
+   print("La declaración es invalida.")
+"""
 
+#----------------- 3. Pruebas comparación
 """
-"""
-#----------------- 2. Pruebas comparación
-tokens = [[['IDENTIFICADO'], ['pedro']],
+tokens = [[['IDENTIFICADOR'], ['pedro']],
          [['OPERADOR COMPARACIÓN'], ['==']],
          [['IDENTIFICADOR'], ['a']]]
 x = asa.crear_asa_linea(tokens)
-print("La declaración es: ", analizadors.validar_comparacion(x.get_hijos()))
+y = analizadors.validar_comparacion(x,0,2)
+if(y != None):
+    print("La comparación es valida, ahora el arbol es: ")
+    asa.imprimir_asa(y)
+else: 
+   print("La declaración es invalida.")
 """
-# ----------------- 3. Pruebas comparación
+#----------------- 3. Pruebas condición
+
+tokens = [[['IDENTIFICADOR'], ['pedro']],
+         [['OPERADOR COMPARACIÓN'], ['==']],
+         [['IDENTIFICADOR'], ['a']],
+         [['OPERADOR LÓGICO'], ['&&']],
+         [['IDENTIFICADOR'], ['juan']],
+         [['OPERADOR COMPARACIÓN'], ['==']],
+         [['IDENTIFICADOR'], ['abivail']]]
+x = asa.crear_asa_linea(tokens)
+y = analizadors.validar_comparacion(x,0,2)
+
+y1 = analizadors.validar_comparacion(y,2,5)
+y2 = analizadors.validar_condicion(y1,0,2)
+if(y2 != None):
+    print("La condición es valida, ahora el arbol es: ")
+    asa.imprimir_asa(y)
+else: 
+   print("La condicion es invalida.")
 
 
-
-
-# ----------------- 3. Pruebas argumentos
+# ----------------- 5. Pruebas argumentos
+"""
 tokens1 = [[['LITERAL CADENA'], ['"']],
           [['IDENTIFICADO'], ['pedro']],
           [['IDENTIFICADO'], ['pascal']],
@@ -84,6 +116,8 @@ tokens3 = [[['LITERAL CADENA'], ['"']],
           [['LITERAL CADENA'], ['"']],
           [['OPERADOR MATEMÁTICO'], [',']]]
 x = asa.crear_asa_comentario(tokens1)
+print("Arbol: ")
+asa.imprimir_asa(x)
 print("El argumento es: ", analizadors.validar_argumentos(x.get_hijos()))
 print("El argumento printf es: ", analizadors.validar_argumentos_printf(x.get_hijos()))
 x = asa.crear_asa_comentario(tokens2)
@@ -92,4 +126,4 @@ print("El argumento printf es: ", analizadors.validar_argumentos_printf(x.get_hi
 x = asa.crear_asa_comentario(tokens3)
 print("El argumento es: ", analizadors.validar_argumentos(x.get_hijos()))
 print("El argumento printf es: ", analizadors.validar_argumentos_printf(x.get_hijos()))
-
+"""
