@@ -4,8 +4,8 @@ from Recursos import Nodo as nodo
 from Recursos import ArbolSintaxisAbstracta as asa
 
 """
-1. SALVO EL...(Como manejamos el !??)
-2. atomica incremental decremental ++ -- 
+1. (HECHO) SALVO EL...(Como manejamos el !??)
+2. (HECHO) atomica incremental decremental ++ -- 
 3. Declaración funcion 
 4. Asignación 
 5. Llamada función
@@ -13,7 +13,7 @@ from Recursos import ArbolSintaxisAbstracta as asa
 7. While
 
 """
-
+#---------------------- INICIO ATOMICAS -----------------
 """validar_bloque:
 
 Recibe todo un bloque de codigo como parametro "codigo", un numero de linea "num_linea" donde 
@@ -53,6 +53,14 @@ def validar_caracter(raiz, caracter):
     hijos = raiz.get_hijos()
     for hijo in hijos:
         if hijo.valor[1][0] == caracter:
+            existe = True
+    return existe
+
+def validar_token(raiz, token):
+    existe = False
+    hijos = raiz.get_hijos()
+    for hijo in hijos:
+        if hijo.valor[0][0] == token:
             existe = True
     return existe
 
@@ -162,22 +170,36 @@ def validar_comparacion(raiz, inicial, final):
 def validar_condicion(raiz, inicial,final):
     hijos = raiz.hijos[inicial:final + 1]
     estructura = [['IDENTIFICADOR','COMPARACIÓN'], ['OPERADOR LÓGICO'], ['IDENTIFICADOR','COMPARACIÓN']]
-    estructuraB = [[],[]] #DEFINIRLO CON IF SEGUN LA LONGITUD DIFERENCIA ENTRE INICIAL Y FINAL
+    estructuraB = [['OPERADOR LÓGICO'],['IDENTIFICADOR','COMPARACIÓN','OPERADOR LÓGICO']] #DEFINIRLO CON IF SEGUN LA LONGITUD DIFERENCIA ENTRE INICIAL Y FINAL
     valor_papa = [['CONDICIÓN'],['']]
+    if (final+1 - inicial) == 3:
+        if validar_estructura(estructura, hijos) and hijos[1].valor[1][0] != '!':
+            return asa.crear_nodo_padre(raiz,inicial,final,valor_papa)
+        else:
+            asa.imprimir_asa(raiz)
+            return None
+    elif(final+1 - inicial) == 2:
+            if validar_estructura(estructuraB, hijos) and hijos[0].valor[1][0] == '!':
+                return asa.crear_nodo_padre(raiz,inicial,final,valor_papa)
+            else:
+                asa.imprimir_asa(raiz)
+                return None
+
+def validar_incremental_decremental(raiz,inicial,final):
+    hijos = raiz.hijos[inicial:final + 1]
+    estructura = [['IDENTIFICADOR','OPERACIÓN MATEMATICA','CARÁCTER INC-DEC'], ['IDENTIFICADOR','OPERACIÓN MATEMATICA','CARÁCTER INC-DEC']]
+    valor_papa = [['INCREMENTAL DECREMENTAL'],['']]
     if validar_estructura(estructura, hijos):
-        return asa.crear_nodo_padre(raiz,inicial,final,valor_papa)
+        return asa.crear_nodo_padre(raiz,inicial,final,valor_papa) 
     else:
-        asa.imprimir_asa(raiz)
         return None
 
-# ----------------------------AQUÍ EMPIEZA MI CODIGO------------------------------
 """validar_argumentos normales:
 Recibe unos "hijos" (lista de nodos cuyo valor son tokens) y valida que estos tengan
 la estructura de un atomico de argumento basico, es decir que tengan un cáracter de 
 puntuación específico (,) en la mitad, y a ambos lados de este tengan un identificador (sea de
 variable o de función, un numero entero, un numero flotante o una cadena).
 """
-
 def validar_argumentos(hijos):
     es_valido = True
     estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE'], ['CARÁCTER PUNTUACIÓN']]
@@ -205,3 +227,41 @@ def validar_argumentos_printf(hijos):
             return es_valido
     else:
         return not es_valido
+
+#------------------- FIN ATOMICAS ------------------------
+
+#---------------- INICIO COMPUESTAS ----------------------
+
+def validar_asignacion(raiz):
+    es_valido = True
+    i = 0
+    hijos = raiz.get_hijos()
+    estructura = [['IDENTIFICADOR','DECLARACIÓN VARIABLE/PARAMETROS'],
+                  ['OPERADOR ASIGNACIÓN'],
+                  ['IDENTIFICADOR','OPERACIÓN MATEMATICA','NUMERO ENTERO', 'NUMERO FLOTANTE','CADENA'],
+                  ['CARÁCTER PUNTUACIÓN']]
+
+    while i < len(hijos):
+        if hijos[i].valor[0][0] == 'OPERADOR MATEMÁTICO':
+            raiz = validar_operacion_matematica(raiz, i - 1, i + 1)
+            if raiz is None:
+                return not es_valido
+            else:
+                hijos = raiz.get_hijos()
+                i = 0 
+                asa.imprimir_asa(raiz)
+        else:
+            i += 1
+    if hijos[0].valor[0][0] == 'PALABRA RESERVADA':
+        return es_valido
+    elif hijos[0].valor[0][0] == 'IDENTIFICADOR':
+        return es_valido
+    else:
+        return not es_valido
+    """
+    posibilidades: 
+    Declaracion = Operacion matematica/NumeroEntero/Identificador/NumeroFlotante
+    Identificador = Operacion matematica/NumeroEntero/Identificador/NumeroFlotante/cadenas
+    """
+
+

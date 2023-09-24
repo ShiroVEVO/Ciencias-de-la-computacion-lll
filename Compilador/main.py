@@ -31,7 +31,7 @@ x = analizadors.validar_bloque(codigo,1,"}")
 #for elemento in x:
 #     print(elemento)
 
-x = asa.crear_asa_linea(codigo)
+x = asa.crear_asa_programa(codigo)
 asa.imprimir_asa(x)
 """
 
@@ -86,32 +86,37 @@ tokens = [[['IDENTIFICADOR'], ['pedro']],
          [['IDENTIFICADOR'], ['juan']],
          [['OPERADOR COMPARACIÓN'], ['==']],
          [['IDENTIFICADOR'], ['abivail']]]
-x = asa.crear_asa_linea(tokens)
-y = analizadors.validar_comparacion(x,0,2)
-
-y1 = analizadors.validar_comparacion(y,2,5)
-y2 = analizadors.validar_condicion(y1,0,2)
+tokens2 =[[['OPERADOR LÓGICO'], ['&&']],
+         [['IDENTIFICADOR'], ['juan']],
+         [['OPERADOR COMPARACIÓN'], ['==']],
+         [['IDENTIFICADOR'], ['abivail']]]
+x = asa.crear_asa_linea(tokens2)
+y = analizadors.validar_comparacion(x,1,3)
+y2 = analizadors.validar_condicion(y,0,1)
+#y = analizadors.validar_comparacion(x,0,2)
+#y1 = analizadors.validar_comparacion(y,2,4)
+#y2 = analizadors.validar_condicion(y1,0,2)
 if(y2 != None):
     print("La condición es valida, ahora el arbol es: ")
-    asa.imprimir_asa(y)
+    asa.imprimir_asa(y2)
 else: 
    print("La condicion es invalida.")
 """
 
 # ----------------- 5. Pruebas argumentos
-
+"""
 tokens1 = [[['LITERAL CADENA'], ['"']],
-          [['IDENTIFICADO'], ['pedro']],
-          [['IDENTIFICADO'], ['pascal']],
+          [['IDENTIFICADOR'], ['pedro']],
+          [['IDENTIFICADOR'], ['pascal']],
           [['LITERAL CADENA'], ['"']],
           [['OPERADOR MATEMÁTICO'], ['+']]]
 tokens2 = [[['LITERAL CADENA'], ['"']],
-          [['IDENTIFICADO'], ['pedro']],
-          [['IDENTIFICADO'], ['pascal']],
+          [['IDENTIFICADOR'], ['pedro']],
+          [['IDENTIFICADOR'], ['pascal']],
           [['LITERAL CADENA'], ['"']]]
 tokens3 = [[['LITERAL CADENA'], ['"']],
-          [['IDENTIFICADO'], ['pedro']],
-          [['IDENTIFICADO'], ['pascal']],
+          [['IDENTIFICADOR'], ['pedro']],
+          [['IDENTIFICADOR'], ['pascal']],
           [['LITERAL CADENA'], ['"']],
           [['OPERADOR MATEMÁTICO'], [',']]]
 x = asa.crear_asa_comentario(tokens1)
@@ -125,4 +130,26 @@ print("El argumento printf es: ", analizadors.validar_argumentos_printf(x.get_hi
 x = asa.crear_asa_comentario(tokens3)
 print("El argumento es: ", analizadors.validar_argumentos(x.get_hijos()))
 print("El argumento printf es: ", analizadors.validar_argumentos_printf(x.get_hijos()))
+"""
+# ----------------- 6. Pruebas Incremental Decremental
+"""
+tokens1 = [[['IDENTIFICADOR'], ['pedro']],
+           [['CARÁCTER INC-DEC'], ['++']]]
+
+x = asa.crear_asa_comentario(tokens1)
+y = analizadors.validar_incremental_decremental(x,0,1)
+if(y != None):
+    print("La operación es valida, ahora el arbol es: ")
+    asa.imprimir_asa(y)
+else: 
+   print("La operacion es invalida.")
+"""
+
+# ------------------ 7. Pruebas Asignacion 
+
+arboles = []
+for linea in codigo:
+      arboles.append(asa.crear_asa_linea(s.separador(linea)))
+
+print(analizadors.validar_asignacion(arboles[20]))
 

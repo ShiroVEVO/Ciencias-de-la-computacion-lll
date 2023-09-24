@@ -17,7 +17,7 @@ void imprimirSerie(int inicio, int fin) {
     printf("\n");
 }
 int main() {
-    int num1=5;
+    int num1=3+2+4;
     int num2=7;
 
     // Utilizar la función suma
