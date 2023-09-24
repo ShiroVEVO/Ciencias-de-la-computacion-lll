@@ -5,7 +5,7 @@ from Analizador_Sintactico import AnalizadorSintactico as analizadors
 from Recursos import Nodo as nodo
 
 # ---------------- PRUEBAS ANALIZADOR LEXICO --------------------
-codigo = r.leer_archivo('Compilador/archivo.c')
+codigo = r.leer_archivo('../Compilador/archivo.c')
 tokens = []
 i = 0
 """
