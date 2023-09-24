@@ -22,7 +22,6 @@ Busca crear un arbol de sintaxis abstracta (ASA/AST) a partir de unos "tokens" q
 estos tokens se espera que correspondan unicamente a los tokens asociados a una linea en especifico, 
 inicia creando un nodo "linea" que será la raiz del arbol y le agrega unos nodos hijos que corresponden
 a los tokens de esa linea."""
-
 def crear_asa_linea(tokens):
     raiz = nodo.Nodo("linea") # crea el nodo base
     for token in tokens: #por cada token le agrega un nodo hijo a la raiz
@@ -35,7 +34,6 @@ usa el metodo crear_asa_linea para crear el arbol de sintaxis abstracta (ASA/AST
 por tanto recibe un codigo general, que debe ser un arreglo de strings correspondientes a cada linea
 del codigo, crea un nodo raiz denominado "programa" y le va agregando "hijos" que corresponden
 a nodos "linea" que tienen asociados como hijos los tokens de esa linea"""
-
 def crear_asa_programa(codigo):
     raiz = nodo.Nodo("programa")
     for elemento in codigo:
@@ -43,12 +41,11 @@ def crear_asa_programa(codigo):
         raiz.agregar_hijo(crear_asa_linea(tokens_linea))
     return raiz
 
-"""imprimir_asa
+"""imprimir_asa:
 
 recibe como parametro un nodo raiz "nodo" a partir del cual empezar a imprimir los valores de si mismo, 
 y sus nodos hijos, este proceso lo hace iterativamente para cada uno de sus hijos independientemente
 de la profundidad, por tanto asi tenga más de 3 niveles de profundidad permitirá imprimir todo el arbol"""
-
 def imprimir_asa(nodo, profundidad=0):
     print("  " * profundidad, nodo.valor) #imprime el valor del nodo raiz
     for hijo in nodo.hijos: # por cada uno de los hijos del nodo raiz se invoca a si mismo aumentando la profundidad en 1
@@ -63,8 +60,7 @@ def crear_nodo_padre(raiz,inicio,final,valor):
     raiz.hijos[inicio:final + 1] = []
     raiz.hijos.insert(inicio, nodo_padre)
     return raiz
-#
-#
+
 #--------------------------------------------MI AVANCE--------------------------------------------
 """
 Crea un ASA a partir de una lista de tokens. Este me ayuda a validar una cadena completa, ya que el arbol 
@@ -92,7 +88,7 @@ def crear_asa_comentario(tokens):
         # Caso: Cadena
         if valor == ['"']:
             if primer_tipo_nodo_cadenas:
-                nuevo_nodo = nodo.Nodo("cadena")  # Creamos un nuevo nodo tipo "cadena"
+                nuevo_nodo = nodo.Nodo([['CADENA'],['']])  # Creamos un nuevo nodo tipo "cadena"
                 ultimo_nodo.agregar_hijo(nuevo_nodo)  # Agregamos el nuevo nodo como hijo del último nodo abierto
                 pila_nodos.append(nuevo_nodo)  # Agregamos el nuevo nodo a la pila de nodos
                 ultimo_nodo = nuevo_nodo  # Actualizamos el último nodo abierto
