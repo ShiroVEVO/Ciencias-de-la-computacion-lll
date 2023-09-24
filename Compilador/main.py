@@ -32,11 +32,8 @@ for elemento in x:
 #x = asa.crear_asa_programa(codigo)
 #asa.imprimir_asa(x)
 
-"""
-tokens =[[['PALABRA RESERVADA'], ['char']],
-     [['IDENTIFICADOR'], ['aweqwqa']],
-     [['CARÁCTER PUNTUACIÓN'], [';']]
-     ]
+
+tokens =[[['IDENTIFICADOR'], ['aweqwqa']]]
 raiz = asa.crear_asa_linea(tokens)
-print(analizadors.validar_declaracion_variable(raiz))"""
+print(analizadors.validar_declaracion_variable(raiz))
 
