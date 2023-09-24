@@ -21,8 +21,7 @@ for elemento in tokens:
    print (elemento)
 """
 
-
-#-------------- PRUEBAS ANALIZADOR SINTACTICO ------------------
+# -------------- PRUEBAS ANALIZADOR SINTACTICO ------------------
 
 """
 x = analizadors.validar_bloque(codigo,1,"}")
@@ -35,8 +34,7 @@ x = asa.crear_asa_linea(codigo)
 asa.imprimir_asa(x)
 """
 
-
-#----------------- 1. Pruebas Operación matematica
+# ----------------- 1. Pruebas Operación matematica
 """
 tokens = [[['NUMERO ENTERO'], ['aweqwqa']],
          [['OPERADOR MATEMÁTICO'], ['+']],
@@ -50,7 +48,7 @@ if(y != None):
 else: 
    print("La operación matematica es invalida")
 """
-#----------------- 2. Pruebas declaración variable o parametros
+# ----------------- 2. Pruebas declaración variable o parametros
 
 """
 tokens = [[['PALABRA RESERVADA'], ['int']],
@@ -64,7 +62,7 @@ else:
    print("La declaración es invalida.")
 """
 
-#----------------- 3. Pruebas comparación
+# ----------------- 3. Pruebas comparación
 """
 tokens = [[['IDENTIFICADOR'], ['pedro']],
          [['OPERADOR COMPARACIÓN'], ['==']],
@@ -77,7 +75,7 @@ if(y != None):
 else: 
    print("La declaración es invalida.")
 """
-#----------------- 3. Pruebas condición
+# ----------------- 3. Pruebas condición
 """
 tokens = [[['IDENTIFICADOR'], ['pedro']],
          [['OPERADOR COMPARACIÓN'], ['==']],
@@ -99,30 +97,47 @@ else:
 """
 
 # ----------------- 5. Pruebas argumentos
-
+"""
 tokens1 = [[['LITERAL CADENA'], ['"']],
-          [['IDENTIFICADO'], ['pedro']],
-          [['IDENTIFICADO'], ['pascal']],
-          [['LITERAL CADENA'], ['"']],
-          [['OPERADOR MATEMÁTICO'], ['+']]]
-tokens2 = [[['LITERAL CADENA'], ['"']],
-          [['IDENTIFICADO'], ['pedro']],
-          [['IDENTIFICADO'], ['pascal']],
-          [['LITERAL CADENA'], ['"']]]
-tokens3 = [[['LITERAL CADENA'], ['"']],
-          [['IDENTIFICADO'], ['pedro']],
-          [['IDENTIFICADO'], ['pascal']],
-          [['LITERAL CADENA'], ['"']],
-          [['OPERADOR MATEMÁTICO'], [',']]]
+           [['IDENTIFICADOR'], ['pedro']],
+           [['IDENTIFICADOR'], ['pascal']],
+           [['LITERAL CADENA'], ['"']],
+           [['CARÁCTER PUNTUACIÓN'], [',']],
+           [['IDENTIFICADOR'], ['fffff']]]
 x = asa.crear_asa_comentario(tokens1)
-print("Arbol: ")
-asa.imprimir_asa(x)
-print("El argumento es: ", analizadors.validar_argumentos(x.get_hijos()))
-print("El argumento printf es: ", analizadors.validar_argumentos_printf(x.get_hijos()))
-x = asa.crear_asa_comentario(tokens2)
-print("El argumento es: ", analizadors.validar_argumentos(x.get_hijos()))
-print("El argumento printf es: ", analizadors.validar_argumentos_printf(x.get_hijos()))
-x = asa.crear_asa_comentario(tokens3)
-print("El argumento es: ", analizadors.validar_argumentos(x.get_hijos()))
-print("El argumento printf es: ", analizadors.validar_argumentos_printf(x.get_hijos()))
+y = analizadors.validar_argumentos_printf(x, 0, 1)
+y1 = analizadors.validar_argumentos_printf(y, 1, 2)
+if (y1 != None):
+    print("La condición es valida, ahora el arbol es: ")
+    asa.imprimir_asa(y1)
+else:
+    print("La condicion es invalida.")
+"""
 
+# ----------------- 5. Pruebas declaración función
+tokens1 = [[['PALABRA RESERVADA'], ['int']],
+           [['IDENTIFICADOR'], ['pedro']],
+           [['SÍMBOLO ESPECIAL'], ['(']],
+           [['PALABRA RESERVADA'], ['int']],
+           [['IDENTIFICADOR'], ['a']],
+           [['CARÁCTER PUNTUACIÓN'], [',']],
+           [['PALABRA RESERVADA'], ['int']],
+           [['IDENTIFICADOR'], ['b']],
+           [['SÍMBOLO ESPECIAL'], [')']],
+ #          [['SÍMBOLO ESPECIAL'], ['{']]
+             ]
+x = asa.crear_asa_linea(tokens1)
+"""
+y = analizadors.validar_declaracion_variable_parametros(x, 0, 1)
+y1 = analizadors.validar_declaracion_variable_parametros(y, 2, 3)
+y2 = analizadors.validar_declaracion_variable_parametros(y1, 4, 5)
+y3 = analizadors.validar_argumento(y2, 2, 3)
+y4 = analizadors.validar_argumento(y3, 3, 3)
+y5 = analizadors.validar_argumentos(y4, 2, 3)
+"""
+m = analizadors.validar_declaracion_funcion(y4)
+if (m != None):
+    print("La declaración de parametros o variable es valida, ahora el arbol es: ")
+    asa.imprimir_asa(m)
+else:
+    print("La declaración es invalida.")

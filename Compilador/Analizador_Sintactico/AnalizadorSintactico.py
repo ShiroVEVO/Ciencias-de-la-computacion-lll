@@ -4,9 +4,9 @@ from Recursos import Nodo as nodo
 from Recursos import ArbolSintaxisAbstracta as asa
 
 """
-1. SALVO EL...(Como manejamos el !??)
-2. atomica incremental decremental ++ -- 
-3. Declaración funcion 
+1. (HECHO) SALVO EL...(Como manejamos el !??)
+2. (HECHO )atomica incremental decremental ++ -- 
+3. (EN PROCESO) Declaración funcion 
 4. Asignación 
 5. Llamada función
 6. Sentencia If
@@ -23,6 +23,8 @@ corresponde al caracter de cierre que se espera.
 Si lo encuentra regresa la pila de codigo que se encontraba dentro del bloque (Si todo es en una
 sola linea regresa esa linea), sino lo encuentra en todo lo que falta de codigo regresa una pila 
 vacia."""
+
+
 def validar_bloque(codigo, num_linea, cadena):
     es_valido = False  # Parametro de validación
     pi = pila.Pila()  # Pila para guardar las lineas involucradas entre apertura y cierre
@@ -41,6 +43,7 @@ def validar_bloque(codigo, num_linea, cadena):
     else:  # si lo encontro y es valido, devuelve la pila con las lineas involucradas
         return pi
 
+
 """validar_caracter:
 
 Recibe:
@@ -48,6 +51,8 @@ Recibe:
     2. un caracter como "caracter"
 y Busca en el arbol de la linea si alguno de los hijos es el caracter buscado, Si lo encuentra
 devuelve un True si no lo encuentra devuelve un False."""
+
+
 def validar_caracter(raiz, caracter):
     existe = False
     hijos = raiz.get_hijos()
@@ -55,6 +60,7 @@ def validar_caracter(raiz, caracter):
         if hijo.valor[1][0] == caracter:
             existe = True
     return existe
+
 
 """validar_estructura:
 
@@ -82,6 +88,8 @@ asi pues pasariamos una lista de 3 espacios, en la lista del primer espacio habr
 segundo espacio habrá 1 posibilidad, y en la lista del tercer espacio habran 3 posibilidades. lo que nos evita definir
 las 7 gramaticas posibles y evaluar cada una con un metodo simple de estructura como lista, en su lugar solo manejamos 
 una multilista y excluimos esas 2 posibilidades erroneas en el validador especifico de las operaciones matematicas"""
+
+
 def validar_estructura(estructura, hijos):
     es_valido = True
     if len(hijos) != len(estructura):
@@ -98,6 +106,7 @@ def validar_estructura(estructura, hijos):
                 break
     return es_valido
 
+
 """validar_operacion_matematica: (ACTUALIZADO A NODO PAPA)
 
 Recibe un arbol raiz (Se espera que sea el arbol de una linea), un indice (Numero del hijo donde
@@ -109,66 +118,76 @@ intentan operar Numeros flotantes con Numeros enteros. al encontrarla crea un no
 "Operación matematica" y los nodos hijos de raiz que se involucran con esta operación pasan a 
 ser hijos del nodo papa.
 """
+
+
 def validar_operacion_matematica(raiz, inicial, final):
     hijos = raiz.hijos[inicial:final + 1]
-    valor_papa = [['OPERACIÓN MATEMATICA'],['']]
-    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE','OPERACIÓN MATEMATICA'],
+    valor_papa = [['OPERACIÓN MATEMATICA'], ['']]
+    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'OPERACIÓN MATEMATICA'],
                   ['OPERADOR MATEMÁTICO'],
-                  ['IDENTIFICADOR', 'NUMERO FLOTANTE', 'NUMERO ENTERO','OPERACIÓN MATEMATICA']]
+                  ['IDENTIFICADOR', 'NUMERO FLOTANTE', 'NUMERO ENTERO', 'OPERACIÓN MATEMATICA']]
     if validar_estructura(estructura, hijos):
         if ((hijos[0].valor[0][0] == 'NUMERO FLOTANTE' and hijos[2].valor[0][0] == 'NUMERO ENTERO') or (
                 hijos[0].valor[0][0] == 'NUMERO ENTERO' and hijos[2].valor[0][0] == 'NUMERO FLOTANTE')):
             return None
         else:
-           return asa.crear_nodo_padre(raiz,inicial,final,valor_papa) 
+            return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
     else:
         return None
+
 
 """validar_declaracion_variable_parametros: (ACTUALIZADO A NODO PAPA)
 
 Recibe unos "hijos" (lista de nodos cuyo valor son tokens) y valida que estos tengan la estructura
 PALABRA RESERVADA - IDENTIFICADOR, Si cumple con ello luego evalua si la palabra reservada
 es un tipo de dato, si no lo es, regresa un False, si lo es Regresa un True"""
-def validar_declaracion_variable_parametros(raiz,inicial,final):
+
+
+def validar_declaracion_variable_parametros(raiz, inicial, final):
     hijos = raiz.hijos[inicial:final + 1]
     es_valido = True
-    valor_papa = [['DECLARACIÓN VARIABLE/PARAMETROS'],['']]
+    valor_papa = [['DECLARACIÓN VARIABLE/PARAMETROS'], ['']]
     estructura = [['PALABRA RESERVADA'], ['IDENTIFICADOR']]
     if validar_estructura(estructura, hijos):
         if hijos[0].valor[1][0] != 'char' and hijos[0].valor[1][0] != 'double' and hijos[0].valor[1][0] != 'float' and \
                 hijos[0].valor[1][0] != 'int' and hijos[0].valor[1][0] != 'long' and hijos[0].valor[1][0] != 'short':
             return None
         else:
-            return asa.crear_nodo_padre(raiz,inicial,final,valor_papa)
+            return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
     else:
         return None
+
 
 """validar_comparacion: (ACTUALIZADO A NODO PAPA)
 Recibe unos "hijos" (lista de nodos cuyo valor son tokens) y valida que estos tengan
 la estructura de un atomico de comparación basico, es decir que tengan un operador
 de comparación en la mitad, y a ambos lados de este tengan un identificador (sea de
 variable o de función, un numero entero, un numero flotante o una cadena)."""
+
+
 def validar_comparacion(raiz, inicial, final):
     hijos = raiz.hijos[inicial:final + 1]
-    valor_papa = [['COMPARACIÓN'],['']]
-    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'LITERAL DE CADENA','COMPARACIÓN'],
+    valor_papa = [['COMPARACIÓN'], ['']]
+    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'LITERAL DE CADENA', 'COMPARACIÓN'],
                   ['OPERADOR COMPARACIÓN'],
-                  ['IDENTIFICADOR', 'NUMERO FLOTANTE', 'NUMERO ENTERO', 'LITERAL DE CADENA','COMPARACIÓN']]
+                  ['IDENTIFICADOR', 'NUMERO FLOTANTE', 'NUMERO ENTERO', 'LITERAL DE CADENA', 'COMPARACIÓN']]
     if validar_estructura(estructura, hijos):
-        return asa.crear_nodo_padre(raiz,inicial,final,valor_papa)
+        return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
     else:
         return None
 
-def validar_condicion(raiz, inicial,final):
+
+def validar_condicion(raiz, inicial, final):
     hijos = raiz.hijos[inicial:final + 1]
-    estructura = [['IDENTIFICADOR','COMPARACIÓN'], ['OPERADOR LÓGICO'], ['IDENTIFICADOR','COMPARACIÓN']]
-    estructuraB = [[],[]] #DEFINIRLO CON IF SEGUN LA LONGITUD DIFERENCIA ENTRE INICIAL Y FINAL
-    valor_papa = [['CONDICIÓN'],['']]
+    estructura = [['IDENTIFICADOR', 'COMPARACIÓN'], ['OPERADOR LÓGICO'], ['IDENTIFICADOR', 'COMPARACIÓN']]
+    estructuraB = [[], []]  # DEFINIRLO CON IF SEGUN LA LONGITUD DIFERENCIA ENTRE INICIAL Y FINAL
+    valor_papa = [['CONDICIÓN'], ['']]
     if validar_estructura(estructura, hijos):
-        return asa.crear_nodo_padre(raiz,inicial,final,valor_papa)
+        return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
     else:
         asa.imprimir_asa(raiz)
         return None
+
 
 # ----------------------------AQUÍ EMPIEZA MI CODIGO------------------------------
 """validar_argumentos normales:
@@ -178,30 +197,51 @@ puntuación específico (,) en la mitad, y a ambos lados de este tengan un ident
 variable o de función, un numero entero, un numero flotante o una cadena).
 """
 
-def validar_argumentos(hijos):
-    es_valido = True
-    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE'], ['CARÁCTER PUNTUACIÓN']]
-    print(hijos[0].valor)
-    if validar_estructura(estructura, hijos) or hijos[0].valor == "cadena":
-        if len(hijos) == 1:
-            return es_valido
-        elif not hijos[1].valor[1][0] == ",":
-            return not es_valido
+
+def validar_argumento(raiz, inicial, final):
+    hijos = raiz.hijos[inicial:final + 1]
+    valor_papa = [['ARGUMENTO'], ['']]
+    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'DECLARACIÓN VARIABLE/PARAMETROS'], ['CARÁCTER PUNTUACIÓN']]
+    estructura2 = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'DECLARACIÓN VARIABLE/PARAMETROS']]
+    if validar_estructura(estructura, hijos) or validar_estructura(estructura2, hijos) or hijos[0].valor[0][0] == "CADENA":
+        if len(hijos) > 1 and not hijos[1].valor[1][0] == ",":
+            return None
         else:
-            return es_valido
+            return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
     else:
-        return not es_valido
+        return None
+
+def validar_argumentos(raiz, inicial, final):
+    hijos = raiz.hijos[inicial:final + 1]
+    valor_papa = [['ARGUMENTOS'], ['']]
+    for hijo in hijos:
+        if hijo == [['ARGUMENTO'], ['']]:
+            final = inicial
+    return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
 
 """validar_argumentos de printf, donde solo se pueden identificadores y cadenas"""
-def validar_argumentos_printf(hijos):
-    es_valido = True
+def validar_argumentos_printf(raiz, inicial, final):
+    hijos = raiz.hijos[inicial:final + 1]
+    valor_papa = [['ARGUMENTO'], ['']]
     estructura = [['IDENTIFICADOR'], ['OPERADOR MATEMÁTICO']]
-    if validar_estructura(estructura, hijos) or hijos[0].valor == "cadena":
-        if len(hijos) == 1:
-            return es_valido
-        elif not hijos[1].valor[1][0] == "+":
-            return not es_valido
+    estructura2 = [['IDENTIFICADOR']]
+    if validar_estructura(estructura, hijos) or validar_estructura(estructura2, hijos) or hijos[0].valor[0][0] == "CADENA":
+        if len(hijos) > 1 and not hijos[1].valor[1][0] == "+":
+            return None
         else:
-            return es_valido
+            return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
     else:
-        return not es_valido
+        return None
+
+"""validar_declaracion_funcion"""
+def validar_declaracion_funcion(raiz):
+    hijos = raiz.get_hijos()
+    estructura = [['DECLARACIÓN VARIABLE/PARAMETROS'], ['SÍMBOLO ESPECIAL'], ['ARGUMENTOS'],
+                  ['SÍMBOLO ESPECIAL'], ['SÍMBOLO ESPECIAL']]
+    estructura2 = [['DECLARACIÓN VARIABLE/PARAMETROS'], ['SÍMBOLO ESPECIAL'], ['ARGUMENTOS'],
+                  ['SÍMBOLO ESPECIAL']]
+    if validar_estructura(estructura, hijos) or validar_estructura(estructura2, hijos):
+            return raiz
+    else:
+        return None
+
