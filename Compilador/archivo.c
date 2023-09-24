@@ -11,9 +11,8 @@ int maximo(int a, int b){
 }
 
 void imprimirSerie(int inicio, int fin) {
-    for (int i=inicio;
-    i<=fin;
-    i++) {    printf("%d ",i);
+    for (int i=inicio;i<=fin;i++) {
+        printf("%d ",i);
     }
     printf("\n");
 }
@@ -26,8 +25,7 @@ int main() {
     printf("La suma de " + num1 + " y " + num2 + "es " + resultado_suma);
 
     int max = maximo(num1, num2);
-    printf("El máximo entre " + 1 + " y " + num2 + "es " + max);
-    /*
+    printf("El máximo entre " + 1 + " y " + num2 + "es " + max);/*
         Se usa la funcion imprimirSerie
         todo dentro de un comentario
         con una inicialización diferente
