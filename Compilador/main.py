@@ -21,7 +21,8 @@ for elemento in tokens:
    print (elemento)
 """
 
-# -------------- PRUEBAS ANALIZADOR SINTACTICO ------------------
+
+#-------------- PRUEBAS ANALIZADOR SINTACTICO ------------------
 
 """
 x = analizadors.validar_bloque(codigo,1,"}")
@@ -34,7 +35,8 @@ x = asa.crear_asa_linea(codigo)
 asa.imprimir_asa(x)
 """
 
-# ----------------- 1. Pruebas Operación matematica
+
+#----------------- 1. Pruebas Operación matematica
 """
 tokens = [[['NUMERO ENTERO'], ['aweqwqa']],
          [['OPERADOR MATEMÁTICO'], ['+']],
@@ -48,7 +50,7 @@ if(y != None):
 else: 
    print("La operación matematica es invalida")
 """
-# ----------------- 2. Pruebas declaración variable o parametros
+#----------------- 2. Pruebas declaración variable o parametros
 
 """
 tokens = [[['PALABRA RESERVADA'], ['int']],
@@ -62,7 +64,7 @@ else:
    print("La declaración es invalida.")
 """
 
-# ----------------- 3. Pruebas comparación
+#----------------- 3. Pruebas comparación
 """
 tokens = [[['IDENTIFICADOR'], ['pedro']],
          [['OPERADOR COMPARACIÓN'], ['==']],
@@ -75,7 +77,7 @@ if(y != None):
 else: 
    print("La declaración es invalida.")
 """
-# ----------------- 3. Pruebas condición
+#----------------- 3. Pruebas condición
 """
 tokens = [[['IDENTIFICADOR'], ['pedro']],
          [['OPERADOR COMPARACIÓN'], ['==']],
@@ -84,20 +86,25 @@ tokens = [[['IDENTIFICADOR'], ['pedro']],
          [['IDENTIFICADOR'], ['juan']],
          [['OPERADOR COMPARACIÓN'], ['==']],
          [['IDENTIFICADOR'], ['abivail']]]
-x = asa.crear_asa_linea(tokens)
-y = analizadors.validar_comparacion(x,0,2)
-
-y1 = analizadors.validar_comparacion(y,2,5)
-y2 = analizadors.validar_condicion(y1,0,2)
+tokens2 =[[['OPERADOR LÓGICO'], ['&&']],
+         [['IDENTIFICADOR'], ['juan']],
+         [['OPERADOR COMPARACIÓN'], ['==']],
+         [['IDENTIFICADOR'], ['abivail']]]
+x = asa.crear_asa_linea(tokens2)
+y = analizadors.validar_comparacion(x,1,3)
+y2 = analizadors.validar_condicion(y,0,1)
+#y = analizadors.validar_comparacion(x,0,2)
+#y1 = analizadors.validar_comparacion(y,2,4)
+#y2 = analizadors.validar_condicion(y1,0,2)
 if(y2 != None):
     print("La condición es valida, ahora el arbol es: ")
-    asa.imprimir_asa(y)
+    asa.imprimir_asa(y2)
 else: 
    print("La condicion es invalida.")
 """
 
 # ----------------- 5. Pruebas argumentos
-"""
+
 tokens1 = [[['LITERAL CADENA'], ['"']],
            [['IDENTIFICADOR'], ['pedro']],
            [['IDENTIFICADOR'], ['pascal']],
@@ -141,3 +148,11 @@ if (m != None):
     asa.imprimir_asa(m)
 else:
     print("La declaración es invalida.")
+"""
+# ------------------ 7. Pruebas Asignacion
+
+arboles = []
+for linea in codigo:
+      arboles.append(asa.crear_asa_linea(s.separador(linea)))
+
+print(analizadors.validar_asignacion(arboles[20]))
