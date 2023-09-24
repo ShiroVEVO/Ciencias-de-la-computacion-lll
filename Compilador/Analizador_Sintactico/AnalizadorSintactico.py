@@ -25,12 +25,11 @@ los hijos necesarios. solo las validaciones más generales recibiran la linea en
 3. (HECHO) atomica de operacion matematica "IDENTIFICADOR OPERADOR MATEMATICO IDENTIFICADOR"
 4. (HECHO) atomica de (parametros/Declaracion Variable) "TIPO IDENTIFICADOR"
 5. (HECHO, DISCUTIBLE)atomica comparacion "IDENTIFICADOR/NUMEROS/CADENAS... OPERADOR COMPARACIÓN (lo mismo de antes del operador)
-    para la 5. no hay que quitar el ++ -- de operadores de comparación?? y crear otra categoria... esos son incrementales o decrementales
-    relacionado al 7...
+    para la 5. no hay que quitar el ++ -- de operadores de comparación?? Ya cree otra cateogia, pero solo con esos dos
 6. (Chale...)atomica de condicion "comparacion/identificador OPERADOR LOGICO comparacion/identificador" (Como manejamos el !??)
 7. atomica incremental decremental ++ -- += -= =+ =-
-8. Atomica de argumentos argumento + argumento" (Print, argumento como identificador, cadena)
-9. atomica de argumentos 2 "Argumento, Argumento" (con tipos de argumento para funciones generales)
+8. (HECHO, aunque lo mismo de comparación) Atomica de argumentos "argumento + " (Print, argumento como identificador, cadena)
+9. (HECHO, aunque lo mismo de comparación) Atomica de argumentos 2 "Argumento ," (con tipos de argumento para funciones generales)
 """
 
 """validar_bloque:
@@ -43,23 +42,25 @@ Si lo encuentra regresa la pila de codigo que se encontraba dentro del bloque (S
 sola linea regresa esa linea), sino lo encuentra en todo lo que falta de codigo regresa una pila 
 vacia."""
 
+
 def validar_bloque(codigo, num_linea, cadena):
-    es_valido = False #Parametro de validación
-    pi = pila.Pila() #Pila para guardar las lineas involucradas entre apertura y cierre
-    i = num_linea  
-    while not es_valido and i < len(codigo): # mientras no se haya validado y no supere el maximo de codigo
-        pi.apilar(codigo[i]) #se apila la linea
-        tokens_linea = s.separador(codigo[i]) #se separa en tokens la linea, Puede ser que el comentario o x
-                                            #termine y un salvaje le meta otra linea de codigo luego de eso...
-        for elemento in tokens_linea:   #Al dividir en tokens valida si en esa linea esta el cierre que necesita o no
+    es_valido = False  # Parametro de validación
+    pi = pila.Pila()  # Pila para guardar las lineas involucradas entre apertura y cierre
+    i = num_linea
+    while not es_valido and i < len(codigo):  # mientras no se haya validado y no supere el maximo de codigo
+        pi.apilar(codigo[i])  # se apila la linea
+        tokens_linea = s.separador(codigo[i])  # se separa en tokens la linea, Puede ser que el comentario o x
+        # termine y un salvaje le meta otra linea de codigo luego de eso...
+        for elemento in tokens_linea:  # Al dividir en tokens valida si en esa linea esta el cierre que necesita o no
             if str(elemento[1][0]) == cadena:
-                es_valido = True        #Si lo esta cambia a que si es valido
-        i += 1   
-    if not es_valido:   #si al llegar al final del codigo no es valido, vacia la pila y devuelve eso
+                es_valido = True  # Si lo esta cambia a que si es valido
+        i += 1
+    if not es_valido:  # si al llegar al final del codigo no es valido, vacia la pila y devuelve eso
         pi.vaciar
         return pi
-    else:               #si lo encontro y es valido, devuelve la pila con las lineas involucradas
+    else:  # si lo encontro y es valido, devuelve la pila con las lineas involucradas
         return pi
+
 
 """validar_caracter:
 
@@ -69,13 +70,15 @@ Recibe:
 y Busca en el arbol de la linea si alguno de los hijos es el caracter buscado, Si lo encuentra
 devuelve un True si no lo encuentra devuelve un False."""
 
-def validar_caracter(raiz,caracter):
+
+def validar_caracter(raiz, caracter):
     existe = False
     hijos = raiz.get_hijos()
     for hijo in hijos:
         if hijo.valor[1][0] == caracter:
             existe = True
     return existe
+
 
 """validar_estructura:
 
@@ -104,6 +107,7 @@ segundo espacio habrá 1 posibilidad, y en la lista del tercer espacio habran 3 
 las 7 gramaticas posibles y evaluar cada una con un metodo simple de estructura como lista, en su lugar solo manejamos 
 una multilista y excluimos esas 2 posibilidades erroneas en el validador especifico de las operaciones matematicas"""
 
+
 def validar_estructura(estructura, hijos):
     es_valido = True
     if len(hijos) != len(estructura):
@@ -120,6 +124,7 @@ def validar_estructura(estructura, hijos):
                 break
     return es_valido
 
+
 """validar_operacion_matematica:
 
 Recibe unos "hijos" (lista de nodos cuyo valor son tokens) y valida las posibles combinaciones para una 
@@ -127,35 +132,42 @@ operación matematica es decir, que tenga un operador matematico en la mitad y q
 tenga Identificador, Numero Entero o Numero flotante, Excluyendo las combinaciones donde se intentan operar
 Numeros flotantes con Numeros enteros."""
 
+
 def validar_operacion_matematica(hijos):
     es_valido = True
-    estructura = [['IDENTIFICADOR','NUMERO ENTERO','NUMERO FLOTANTE'],['OPERADOR MATEMÁTICO'],['IDENTIFICADOR','NUMERO FLOTANTE','NUMERO ENTERO']]
+    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE'], ['OPERADOR MATEMÁTICO'],
+                  ['IDENTIFICADOR', 'NUMERO FLOTANTE', 'NUMERO ENTERO']]
     if validar_estructura(estructura, hijos):
-        if((hijos[0].valor[0][0] == 'NUMERO FLOTANTE' and hijos[2].valor[0][0] == 'NUMERO ENTERO') or (hijos[0].valor[0][0] == 'NUMERO ENTERO' and hijos[2].valor[0][0] == 'NUMERO FLOTANTE')):
+        if ((hijos[0].valor[0][0] == 'NUMERO FLOTANTE' and hijos[2].valor[0][0] == 'NUMERO ENTERO') or (
+                hijos[0].valor[0][0] == 'NUMERO ENTERO' and hijos[2].valor[0][0] == 'NUMERO FLOTANTE')):
             return not es_valido
         else:
             return es_valido
     else:
         return not es_valido
-    
+
+
 """validar_declaracion_variable_parametros:
 
 Recibe unos "hijos" (lista de nodos cuyo valor son tokens) y valida que estos tengan la estructura
 PALABRA RESERVADA - IDENTIFICADOR, Si cumple con ello luego evalua si la palabra reservada
 es un tipo de dato, si no lo es, regresa un False, si lo es Regresa un True"""
 
+
 def validar_declaracion_variable_parametros(hijos):
     es_valido = True
-    estructura = [['PALABRA RESERVADA'],['IDENTIFICADOR']]
+    estructura = [['PALABRA RESERVADA'], ['IDENTIFICADOR']]
     if validar_estructura(estructura, hijos):
         print("Aja!")
-        if hijos[0].valor[1][0] != 'char' and hijos[0].valor[1][0] != 'double' and hijos[0].valor[1][0] != 'float' and hijos[0].valor[1][0] != 'int' and hijos[0].valor[1][0] != 'long' and hijos[0].valor[1][0] != 'short':
+        if hijos[0].valor[1][0] != 'char' and hijos[0].valor[1][0] != 'double' and hijos[0].valor[1][0] != 'float' and \
+                hijos[0].valor[1][0] != 'int' and hijos[0].valor[1][0] != 'long' and hijos[0].valor[1][0] != 'short':
             return not es_valido
         else:
             return es_valido
-    else: 
+    else:
         print("Aiñ!")
         return not es_valido
+
 
 """validar_comparacion:
 Recibe unos "hijos" (lista de nodos cuyo valor son tokens) y valida que estos tengan
@@ -166,23 +178,21 @@ variable o de función, un numero entero, un numero flotante o una cadena).
 POR AHORA, excluye los operadores de comparación ++ y -- porqué creo que no se usan
 en ninguna comparación =-= pero no estoy seguro, lo hablamos luego, besos en las nalgas JAJAJAJAJA"""
 
+
 def validar_comparacion(hijos):
     es_valido = True
-    estructura = [['IDENTIFICADOR','NUMERO ENTERO','NUMERO FLOTANTE','LITERAL DE CADENA'],
+    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'LITERAL DE CADENA'],
                   ['OPERADOR COMPARACIÓN'],
-                  ['IDENTIFICADOR','NUMERO FLOTANTE','NUMERO ENTERO','LITERAL DE CADENA']]
-    if validar_estructura(estructura,hijos):
-        #CODIGO QUE DEBEMOS DISCUTIR....
-        if hijos[1].valor[1][0] == '++' or hijos[1].valor[1][0] == '--':
-            return not es_valido
-        #FIN CODIGO QUE DEBEMOS DISCUTIR...
+                  ['IDENTIFICADOR', 'NUMERO FLOTANTE', 'NUMERO ENTERO', 'LITERAL DE CADENA']]
+    if validar_estructura(estructura, hijos):
         return es_valido
     else:
         return not es_valido
 
-def validar_condicion(raiz):#comparacion/identificador OPERADOR LOGICO comparacion/identificador
+
+def validar_condicion(raiz):  # comparacion/identificador OPERADOR LOGICO comparacion/identificador
     es_valido = True
-    estructura = [['IDENTIFICADOR'],['OPERADOR LÓGICO'],['IDENTIFICADOR'],]
+    estructura = [['IDENTIFICADOR'], ['OPERADOR LÓGICO'], ['IDENTIFICADOR']]
     """
         Me acabo de dar cuenta de la utilidad de los nodos intermedios JAJAJAJA
         Si empaquetamos los atomicos que ya validamos bajo una nueva etiqueta, es decir un nuevo nodo, que se
@@ -220,7 +230,8 @@ def validar_condicion(raiz):#comparacion/identificador OPERADOR LOGICO comparaci
     """
     return None
 
-#--------------------------------------------------- HASTA AQUÍ LLEGA EL CODIGO UTIL-------------
+
+# --------------------------------------------------- HASTA AQUÍ LLEGA EL CODIGO UTIL-------------
 
 """ 
 validar_tipo_de_dato_variable:
@@ -237,3 +248,41 @@ def validar_tipo_de_dato_variable(nodo):
 
     
 """
+
+# ----------------------------AQUÍ EMPIEZA MI CODIGO------------------------------
+"""validar_argumentos normales:
+Recibe unos "hijos" (lista de nodos cuyo valor son tokens) y valida que estos tengan
+la estructura de un atomico de argumento basico, es decir que tengan un cáracter de 
+puntuación específico (,) en la mitad, y a ambos lados de este tengan un identificador (sea de
+variable o de función, un numero entero, un numero flotante o una cadena).
+"""
+
+
+def validar_argumentos(hijos):
+    es_valido = True
+    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE'], ['CARÁCTER PUNTUACIÓN']]
+    print()
+    if validar_estructura(estructura, hijos) or hijos[0].valor == "cadena":
+        if len(hijos) == 1:
+            return es_valido
+        elif not hijos[1].valor[1][0] == ",":
+            return not es_valido
+        else:
+            return es_valido
+    else:
+        return not es_valido
+
+
+"""validar_argumentos de printf, donde solo se pueden identificadores y cadenas"""
+def validar_argumentos_printf(hijos):
+    es_valido = True
+    estructura = [['IDENTIFICADOR'], ['OPERADOR MATEMÁTICO']]
+    if validar_estructura(estructura, hijos) or hijos[0].valor == "cadena":
+        if len(hijos) == 1:
+            return es_valido
+        elif not hijos[1].valor[1][0] == "+":
+            return not es_valido
+        else:
+            return es_valido
+    else:
+        return not es_valido

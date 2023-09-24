@@ -4,30 +4,36 @@ from Recursos import ArbolSintaxisAbstracta as asa
 from Analizador_Sintactico import AnalizadorSintactico as analizadors
 from Recursos import Nodo as nodo
 
-#---------------- PRUEBAS ANALIZADOR LEXICO --------------------
+# ---------------- PRUEBAS ANALIZADOR LEXICO --------------------
 """
 tokens = []
 codigo = r.leer_archivo('Compilador/archivo.c')
 i = 0
+
 for i, elemento in enumerate(codigo):
    print ("Elemento: #", str(i), ", ", elemento)
 for clave, valor in r.contar_elemento(tokens, 0).items():
    print(f"{clave}: {valor}")
+
 for linea in codigo:
       tokens.extend(s.separador(linea))
+
 for elemento in tokens:
-   print (elemento)"""
+   print (elemento)
+"""
+"""
 #-------------- PRUEBAS ANALIZADOR SINTACTICO ------------------
-"""
-x = analizadors.validar_bloque(codigo,12,"}")
-print("---- pila ----", "\n")
-for elemento in x:
-     print(elemento)
 
-x = asa.crear_asa_programa(codigo)
+x = analizadors.validar_bloque(codigo,1,"}")
+
+#print("---- pila ----", "\n")
+#for elemento in x:
+#     print(elemento)
+
+x = asa.crear_asa_linea(codigo)
 asa.imprimir_asa(x)
-"""
 
+"""
 
 """
 #----------------- 1. Pruebas Operación matematica
@@ -47,18 +53,43 @@ tokens = [[['PALABRA RESERVADA'], ['int']],
          [['IDENTIFICADO'], ['a']]]
 x = asa.crear_asa_linea(tokens) 
 print("La declaración es: ", analizadors.validar_declaracion_variable_parametros(x.get_hijos()))
+
 """
-
-
+"""
 #----------------- 2. Pruebas comparación
 tokens = [[['IDENTIFICADO'], ['pedro']],
-         [['OPERADOR COMPARACIÓN'], ['!=']],
+         [['OPERADOR COMPARACIÓN'], ['==']],
          [['IDENTIFICADOR'], ['a']]]
-x = asa.crear_asa_linea(tokens) 
+x = asa.crear_asa_linea(tokens)
 print("La declaración es: ", analizadors.validar_comparacion(x.get_hijos()))
+"""
+# ----------------- 3. Pruebas comparación
 
 
 
 
-
+# ----------------- 3. Pruebas argumentos
+tokens1 = [[['LITERAL CADENA'], ['"']],
+          [['IDENTIFICADO'], ['pedro']],
+          [['IDENTIFICADO'], ['pascal']],
+          [['LITERAL CADENA'], ['"']],
+          [['OPERADOR MATEMÁTICO'], ['+']]]
+tokens2 = [[['LITERAL CADENA'], ['"']],
+          [['IDENTIFICADO'], ['pedro']],
+          [['IDENTIFICADO'], ['pascal']],
+          [['LITERAL CADENA'], ['"']]]
+tokens3 = [[['LITERAL CADENA'], ['"']],
+          [['IDENTIFICADO'], ['pedro']],
+          [['IDENTIFICADO'], ['pascal']],
+          [['LITERAL CADENA'], ['"']],
+          [['OPERADOR MATEMÁTICO'], [',']]]
+x = asa.crear_asa_comentario(tokens1)
+print("El argumento es: ", analizadors.validar_argumentos(x.get_hijos()))
+print("El argumento printf es: ", analizadors.validar_argumentos_printf(x.get_hijos()))
+x = asa.crear_asa_comentario(tokens2)
+print("El argumento es: ", analizadors.validar_argumentos(x.get_hijos()))
+print("El argumento printf es: ", analizadors.validar_argumentos_printf(x.get_hijos()))
+x = asa.crear_asa_comentario(tokens3)
+print("El argumento es: ", analizadors.validar_argumentos(x.get_hijos()))
+print("El argumento printf es: ", analizadors.validar_argumentos_printf(x.get_hijos()))
 

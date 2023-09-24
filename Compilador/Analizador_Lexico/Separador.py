@@ -5,7 +5,7 @@ def separador(cadena):
     tokens = []
     i = 0
     while i < len(cadena):
-        if cadena[i].isalpha():
+        if cadena[i].isalpha() or cadena[i] == '_':
             i, token = t.obtener_pReservadas(cadena, i)
             tokens.append(token)
 

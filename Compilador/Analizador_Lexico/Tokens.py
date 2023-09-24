@@ -3,22 +3,25 @@ palabras_reservadas = ['auto', 'break', 'case', 'char', 'const', 'continue', 'de
                        'long', 'register', 'return', 'short', 'signed', 'sizeof', 'static',
                        'struct', 'switch', 'typedef', 'union', 'unsigned', 'void', 'volatile', 'while']
 
-op_asignacion = ['=', '+=', '-=', '*=', '/=', '&=']
+oAsignacion = ['=', '+=', '-=', '*=', '/=', '&=']
 
-op_matematico = ['+', '-', '*', '/', '%']
+oMatematico = ['+', '-', '*', '/', '%']
 
-op_logico = ['&&', '||', '!']
+oLogico = ['&&', '||', '!']
 
-op_comparacion = ['++', '--', '==', '!=', '<', '>', '<=', '>=']
+oComparacion = ['==', '!=', '<', '>', '<=', '>=']
 
-sim_especial = ['(', ')', '[', ']', '#', '{', '}']
+oIncdec = ['++', '--']
+
+sEspecial = ['(', ')', '[', ']', '#', '{', '}']
 
 comentario = ['//', '/*', '*/']
 
-l_cadena = ['"']
+lCadena = ['"']
 
 puntuador = ['.', ';', ',', ':']
 
+'''Obtiene como párametro las listas de palabras de cada linea y compara con la lista de palabras reservada'''
 def obtener_pReservadas(cadena, i):
     j = i
     while j < len(cadena) and (cadena[j].isalpha() or cadena[j].isdigit()):
@@ -28,9 +31,11 @@ def obtener_pReservadas(cadena, i):
             return j, [['PALABRA RESERVADA'], [cadena[i:j]]]
     return obtener_identificador(cadena, i)
 
+'''Obtiene una cadena la cual sigue recorriendo desde el párametro enviado i hasta que ya no se cumplan
+las condiciones (solo cadenas-números-_)'''
 def obtener_identificador(cadena, i):
     j = i
-    while j < len(cadena) and (cadena[j].isalpha() or cadena[j].isdigit()):
+    while j < len(cadena) and (cadena[j].isalpha() or cadena[j].isdigit() or cadena[j] == '_'):
         j += 1
     return j, [['IDENTIFICADOR'], [cadena[i:j]]]
 
@@ -54,7 +59,7 @@ def obtener_numero(cadena, i):
     else:
         return j, [['NUMERO ENTERO'], [cadena[i:j]]]
 
-#Tal vez un método que puede clasificar cada uno de los operadores diferente
+#Un método que puede clasificar cada uno de los operadores diferente
 def obtener_operador(cadena, nlista, i):
     j = i + 1
     if nlista == 0:
@@ -71,12 +76,14 @@ def obtener_operador(cadena, nlista, i):
         return j, [['COMENTARIO'], [cadena]]
     elif nlista == 6:
         return j, [['LITERAL DE CADENA'], [cadena]]
-    else:
+    elif nlista == 7:
         return j, [['CARÁCTER PUNTUACIÓN'], [cadena]]
+    else:
+        return j, [['CARÁCTER INC-DEC'], [cadena]]
 
-
+'''Recibe la cadena y la va comparando con cada lista de tokens'''
 def obtener_categoria_operador(cadena, i):
-    operadores = [op_asignacion, op_matematico, op_logico, op_comparacion, sim_especial, comentario, l_cadena, puntuador]
+    operadores = [oAsignacion, oMatematico, oLogico, oComparacion, sEspecial, comentario, lCadena, puntuador, oIncdec]
     for nlista, lista in enumerate(operadores):
         if cadena in lista:
             return obtener_operador(cadena, nlista, i)
