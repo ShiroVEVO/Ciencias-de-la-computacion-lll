@@ -40,7 +40,7 @@ asa.imprimir_asa(x)
 """
 tokens = [[['NUMERO ENTERO'], ['aweqwqa']],
          [['OPERADOR MATEMÁTICO'], ['+']],
-         [['IDENTIFICADOR'], ['pipipi']]]
+         [['IDENTIFICADO'], ['pipipi']]]
 
 x = asa.crear_asa_linea(tokens) 
 y = analizadors.validar_operacion_matematica(x,0,2)
@@ -50,7 +50,6 @@ if(y != None):
 else: 
    print("La operación matematica es invalida")
 """
-
 #----------------- 2. Pruebas declaración variable o parametros
 
 """
@@ -79,7 +78,7 @@ else:
    print("La declaración es invalida.")
 """
 #----------------- 3. Pruebas condición
-
+"""
 tokens = [[['IDENTIFICADOR'], ['pedro']],
          [['OPERADOR COMPARACIÓN'], ['==']],
          [['IDENTIFICADOR'], ['a']],
@@ -97,10 +96,10 @@ if(y2 != None):
     asa.imprimir_asa(y)
 else: 
    print("La condicion es invalida.")
-
+"""
 
 # ----------------- 5. Pruebas argumentos
-"""
+
 tokens1 = [[['LITERAL CADENA'], ['"']],
           [['IDENTIFICADO'], ['pedro']],
           [['IDENTIFICADO'], ['pascal']],
@@ -126,4 +125,4 @@ print("El argumento printf es: ", analizadors.validar_argumentos_printf(x.get_hi
 x = asa.crear_asa_comentario(tokens3)
 print("El argumento es: ", analizadors.validar_argumentos(x.get_hijos()))
 print("El argumento printf es: ", analizadors.validar_argumentos_printf(x.get_hijos()))
-"""
+

@@ -4,16 +4,14 @@ from Recursos import Nodo as nodo
 from Recursos import ArbolSintaxisAbstracta as asa
 
 """
-1. (HECHO) MODIFICACION DEL SEPARADOR O DEL LECTOR PARA NO PERMITIR DOS LINEAS EN UNA MISMA (EXCEPTO EN EL FOR)
-2. (HECHO) Alterar la funcion de ; para que reciba la existencia de cualquier elemento 
-3. (HECHO) atomica de operacion matematica "IDENTIFICADOR OPERADOR MATEMATICO IDENTIFICADOR"
-4. (HECHO) atomica de (parametros/Declaracion Variable) "TIPO IDENTIFICADOR"
-5. (HECHO) atomica comparacion "IDENTIFICADOR/NUMEROS/CADENAS... OPERADOR COMPARACIÓN (lo mismo de antes del operador)
-6. (HECHO) atomica de condicion "comparacion/identificador OPERADOR LOGICO comparacion/identificador" 
-        SALVO EL...(Como manejamos el !??)
-7. atomica incremental decremental ++ -- += -= =+ =-
-8. (HECHO, aunque lo mismo de comparación) Atomica de argumentos "argumento + " (Print, argumento como identificador, cadena)
-9. (HECHO, aunque lo mismo de comparación) Atomica de argumentos 2 "Argumento ," (con tipos de argumento para funciones generales)
+1. SALVO EL...(Como manejamos el !??)
+2. atomica incremental decremental ++ -- 
+3. Declaración funcion 
+4. Asignación 
+5. Llamada función
+6. Sentencia If
+7. While
+
 """
 
 """validar_bloque:
@@ -25,8 +23,6 @@ corresponde al caracter de cierre que se espera.
 Si lo encuentra regresa la pila de codigo que se encontraba dentro del bloque (Si todo es en una
 sola linea regresa esa linea), sino lo encuentra en todo lo que falta de codigo regresa una pila 
 vacia."""
-
-
 def validar_bloque(codigo, num_linea, cadena):
     es_valido = False  # Parametro de validación
     pi = pila.Pila()  # Pila para guardar las lineas involucradas entre apertura y cierre
@@ -52,7 +48,6 @@ Recibe:
     2. un caracter como "caracter"
 y Busca en el arbol de la linea si alguno de los hijos es el caracter buscado, Si lo encuentra
 devuelve un True si no lo encuentra devuelve un False."""
-
 def validar_caracter(raiz, caracter):
     existe = False
     hijos = raiz.get_hijos()
@@ -87,7 +82,6 @@ asi pues pasariamos una lista de 3 espacios, en la lista del primer espacio habr
 segundo espacio habrá 1 posibilidad, y en la lista del tercer espacio habran 3 posibilidades. lo que nos evita definir
 las 7 gramaticas posibles y evaluar cada una con un metodo simple de estructura como lista, en su lugar solo manejamos 
 una multilista y excluimos esas 2 posibilidades erroneas en el validador especifico de las operaciones matematicas"""
-
 def validar_estructura(estructura, hijos):
     es_valido = True
     if len(hijos) != len(estructura):
@@ -115,7 +109,6 @@ intentan operar Numeros flotantes con Numeros enteros. al encontrarla crea un no
 "Operación matematica" y los nodos hijos de raiz que se involucran con esta operación pasan a 
 ser hijos del nodo papa.
 """
-
 def validar_operacion_matematica(raiz, inicial, final):
     hijos = raiz.hijos[inicial:final + 1]
     valor_papa = [['OPERACIÓN MATEMATICA'],['']]
@@ -136,7 +129,6 @@ def validar_operacion_matematica(raiz, inicial, final):
 Recibe unos "hijos" (lista de nodos cuyo valor son tokens) y valida que estos tengan la estructura
 PALABRA RESERVADA - IDENTIFICADOR, Si cumple con ello luego evalua si la palabra reservada
 es un tipo de dato, si no lo es, regresa un False, si lo es Regresa un True"""
-
 def validar_declaracion_variable_parametros(raiz,inicial,final):
     hijos = raiz.hijos[inicial:final + 1]
     es_valido = True
@@ -156,7 +148,6 @@ Recibe unos "hijos" (lista de nodos cuyo valor son tokens) y valida que estos te
 la estructura de un atomico de comparación basico, es decir que tengan un operador
 de comparación en la mitad, y a ambos lados de este tengan un identificador (sea de
 variable o de función, un numero entero, un numero flotante o una cadena)."""
-
 def validar_comparacion(raiz, inicial, final):
     hijos = raiz.hijos[inicial:final + 1]
     valor_papa = [['COMPARACIÓN'],['']]
@@ -171,6 +162,7 @@ def validar_comparacion(raiz, inicial, final):
 def validar_condicion(raiz, inicial,final):
     hijos = raiz.hijos[inicial:final + 1]
     estructura = [['IDENTIFICADOR','COMPARACIÓN'], ['OPERADOR LÓGICO'], ['IDENTIFICADOR','COMPARACIÓN']]
+    estructuraB = [[],[]] #DEFINIRLO CON IF SEGUN LA LONGITUD DIFERENCIA ENTRE INICIAL Y FINAL
     valor_papa = [['CONDICIÓN'],['']]
     if validar_estructura(estructura, hijos):
         return asa.crear_nodo_padre(raiz,inicial,final,valor_papa)
@@ -186,7 +178,6 @@ puntuación específico (,) en la mitad, y a ambos lados de este tengan un ident
 variable o de función, un numero entero, un numero flotante o una cadena).
 """
 
-
 def validar_argumentos(hijos):
     es_valido = True
     estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE'], ['CARÁCTER PUNTUACIÓN']]
@@ -200,7 +191,6 @@ def validar_argumentos(hijos):
             return es_valido
     else:
         return not es_valido
-
 
 """validar_argumentos de printf, donde solo se pueden identificadores y cadenas"""
 def validar_argumentos_printf(hijos):
