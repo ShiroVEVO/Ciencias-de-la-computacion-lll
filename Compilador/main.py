@@ -5,7 +5,7 @@ from Analizador_Sintactico import AnalizadorSintactico as analizadors
 from Recursos import Nodo as nodo
 
 # ---------------- PRUEBAS ANALIZADOR LEXICO --------------------
-codigo = r.leer_archivo('../Compilador/archivo.c')
+codigo = r.leer_archivo('Compilador/archivo.c')
 tokens = []
 i = 0
 """
@@ -104,7 +104,7 @@ else:
 """
 
 # ----------------- 5. Pruebas argumentos
-
+"""
 tokens1 = [[['LITERAL CADENA'], ['"']],
            [['IDENTIFICADOR'], ['pedro']],
            [['IDENTIFICADOR'], ['pascal']],
@@ -122,6 +122,7 @@ else:
 """
 
 # ----------------- 5. Pruebas declaración función
+"""
 tokens1 = [[['PALABRA RESERVADA'], ['int']],
            [['IDENTIFICADOR'], ['pedro']],
            [['SÍMBOLO ESPECIAL'], ['(']],
@@ -134,14 +135,14 @@ tokens1 = [[['PALABRA RESERVADA'], ['int']],
  #          [['SÍMBOLO ESPECIAL'], ['{']]
              ]
 x = asa.crear_asa_linea(tokens1)
-"""
+
 y = analizadors.validar_declaracion_variable_parametros(x, 0, 1)
 y1 = analizadors.validar_declaracion_variable_parametros(y, 2, 3)
 y2 = analizadors.validar_declaracion_variable_parametros(y1, 4, 5)
 y3 = analizadors.validar_argumento(y2, 2, 3)
 y4 = analizadors.validar_argumento(y3, 3, 3)
 y5 = analizadors.validar_argumentos(y4, 2, 3)
-"""
+
 m = analizadors.validar_declaracion_funcion(y4)
 if (m != None):
     print("La declaración de parametros o variable es valida, ahora el arbol es: ")
@@ -150,9 +151,21 @@ else:
     print("La declaración es invalida.")
 """
 # ------------------ 7. Pruebas Asignacion
-
+"""
 arboles = []
 for linea in codigo:
       arboles.append(asa.crear_asa_linea(s.separador(linea)))
 
-print(analizadors.validar_asignacion(arboles[20]))
+#for i in range(len(arboles)):
+#     asa.imprimir_asa(arboles[i])
+asa.imprimir_asa(arboles[29])
+print(analizadors.validar_asignacion(arboles[29]))
+"""
+
+# ------------------ 8. Pruebas while
+
+arboles = []
+for linea in codigo:
+      arboles.append(asa.crear_asa_linea(s.separador(linea)))
+#asa.imprimir_asa(arboles[14])
+print(analizadors.validar_while(codigo,14))
