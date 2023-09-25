@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7a93b1ae-7374-47d6-b241-f7ae708d18f7" name="Changes" comment="" />
+    <list default="true" id="7a93b1ae-7374-47d6-b241-f7ae708d18f7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Compilador/Analizador_Sintactico/AnalizadorSintactico.py" beforeDir="false" afterPath="$PROJECT_DIR$/Compilador/Analizador_Sintactico/AnalizadorSintactico.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Compilador/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Compilador/main.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -132,7 +136,14 @@
       <option name="project" value="LOCAL" />
       <updated>1695594203862</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Commit 8">
+      <created>1695594788674</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1695594788674</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -142,6 +153,7 @@
     <MESSAGE value="Commit 4" />
     <MESSAGE value="Commit 6" />
     <MESSAGE value="Commit 7" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit 7" />
+    <MESSAGE value="Commit 8" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit 8" />
   </component>
 </project>

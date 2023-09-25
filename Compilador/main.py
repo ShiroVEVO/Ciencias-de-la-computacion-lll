@@ -104,7 +104,7 @@ else:
 """
 
 # ----------------- 5. Pruebas argumentos
-
+"""
 tokens1 = [[['LITERAL CADENA'], ['"']],
            [['IDENTIFICADOR'], ['pedro']],
            [['IDENTIFICADOR'], ['pascal']],
@@ -134,25 +134,26 @@ tokens1 = [[['PALABRA RESERVADA'], ['int']],
  #          [['SÍMBOLO ESPECIAL'], ['{']]
              ]
 x = asa.crear_asa_linea(tokens1)
-"""
-y = analizadors.validar_declaracion_variable_parametros(x, 0, 1)
-y1 = analizadors.validar_declaracion_variable_parametros(y, 2, 3)
-y2 = analizadors.validar_declaracion_variable_parametros(y1, 4, 5)
-y3 = analizadors.validar_argumento(y2, 2, 3)
-y4 = analizadors.validar_argumento(y3, 3, 3)
-y5 = analizadors.validar_argumentos(y4, 2, 3)
-"""
-m = analizadors.validar_declaracion_funcion(y4)
+m = analizadors.validar_declaracion_funcion(x)
 if (m != None):
     print("La declaración de parametros o variable es valida, ahora el arbol es: ")
     asa.imprimir_asa(m)
 else:
     print("La declaración es invalida.")
-"""
-# ------------------ 7. Pruebas Asignacion
 
+# ------------------ 7. Pruebas Asignacion
+"""
 arboles = []
 for linea in codigo:
       arboles.append(asa.crear_asa_linea(s.separador(linea)))
 
 print(analizadors.validar_asignacion(arboles[20]))
+"""
+# ------------------ 7. Pruebas if
+"""
+arboles = []
+for linea in codigo:
+      arboles.append(asa.crear_asa_linea(s.separador(linea)))
+
+print(analizadors.validar_if(arboles[20]))
+"""
