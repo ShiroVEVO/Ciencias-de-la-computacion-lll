@@ -104,7 +104,7 @@ else:
 """
 
 # ----------------- 5. Pruebas argumentos
-"""
+
 tokens1 = [[['LITERAL CADENA'], ['"']],
            [['IDENTIFICADOR'], ['pedro']],
            [['IDENTIFICADOR'], ['pascal']],
@@ -140,20 +140,23 @@ if (m != None):
     asa.imprimir_asa(m)
 else:
     print("La declaración es invalida.")
-
+"""
 # ------------------ 7. Pruebas Asignacion
-"""
+
 arboles = []
 for linea in codigo:
       arboles.append(asa.crear_asa_linea(s.separador(linea)))
 
-print(analizadors.validar_asignacion(arboles[20]))
+#for i in range(len(arboles)):
+#     asa.imprimir_asa(arboles[i])
+asa.imprimir_asa(arboles[29])
+print(analizadors.validar_asignacion(arboles[29]))
 """
-# ------------------ 7. Pruebas if
-"""
+
+# ------------------ 8. Pruebas while
+
 arboles = []
 for linea in codigo:
       arboles.append(asa.crear_asa_linea(s.separador(linea)))
-
-print(analizadors.validar_if(arboles[20]))
-"""
+#asa.imprimir_asa(arboles[14])
+print(analizadors.validar_while(codigo,14))
