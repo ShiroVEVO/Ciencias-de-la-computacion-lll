@@ -160,3 +160,4 @@ for linea in codigo:
       arboles.append(asa.crear_asa_linea(s.separador(linea)))
 #asa.imprimir_asa(arboles[14])
 print(analizadors.validar_while(codigo,14))
+"""

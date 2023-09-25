@@ -24,7 +24,7 @@ def validar_asignacion(raiz):
                   ['OPERADOR ASIGNACIÓN'],
                   ['IDENTIFICADOR', 'OPERACIÓN MATEMATICA', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'CADENA'],
                   ['CARÁCTER PUNTUACIÓN']]
-    if not validar_caracter(raiz,';'):
+    if not eAtomica.validar_caracter(raiz,';'):
         return not es_valido
     while i < len(hijos):
         if hijos[i].valor[0][0] == 'OPERADOR MATEMÁTICO':
@@ -59,16 +59,16 @@ def validar_while(codigo,num_linea):
                   ['CONDICIÓN'],
                   ['SÍMBOLO ESPECIAL'],
                   ['SÍMBOLO ESPECIAL']]
-    pi = validar_bloque(codigo,num_linea,')')
+    pi = eAtomica.validar_bloque(codigo,num_linea,')')
     if pi.esta_vacia():
         return not es_valido
-    pi2 = validar_bloque(codigo,num_linea,'}')
+    pi2 = eAtomica.validar_bloque(codigo,num_linea,'}')
     if pi2.esta_vacia():
         return not es_valido
 
     while i < len(hijos):
         if hijos[i].valor[0][0] == 'OPERADOR COMPARACIÓN':
-            raiz = validar_comparacion(raiz, i - 1, i + 1)
+            raiz = eAtomica.validar_comparacion(raiz, i - 1, i + 1)
             if raiz is None:
                 return not es_valido
             else:
@@ -80,7 +80,7 @@ def validar_while(codigo,num_linea):
     while i < len(hijos):
         print("caso[",i,"]: ", hijos[i].valor[0][0])
         if hijos[i].valor[0][0] == 'OPERADOR LÓGICO':
-            raiz = validar_condicion(raiz, i - 1, i + 1)
+            raiz = eAtomica.validar_condicion(raiz, i - 1, i + 1)
             if raiz is None:
                 return not es_valido
             else:
@@ -101,7 +101,7 @@ def validar_while(codigo,num_linea):
 
     print("..........fin pila..........")
 
-    if validar_estructura(estructura,hijos):
+    if eAtomica.validar_estructura(estructura,hijos):
         if hijos[0].valor[1][0] == 'while' and hijos[1].valor[1][0] == '(' and hijos[3].valor[1][0] == ')' and hijos[4].valor[1][0] == '{':
             return es_valido
     else:
