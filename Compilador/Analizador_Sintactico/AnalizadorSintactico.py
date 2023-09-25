@@ -2,8 +2,8 @@ from Analizador_Lexico import Separador as s
 from Recursos import Pila as pila
 from Recursos import Nodo as nodo
 from Recursos import ArbolSintaxisAbstracta as asa
-import EstructurasAtomicas as eAtomica
-import ConstruccionArbol as cArbol
+from Analizador_Sintactico import EstructurasAtomicas as eAtomica
+from Analizador_Sintactico import ConstruccionArbol as cArbol
 
 """
 1. (HECHO) SALVO EL...(Como manejamos el !??)
@@ -15,7 +15,6 @@ import ConstruccionArbol as cArbol
 7. (ADRIAN) While
 
 """
-
 def validar_asignacion(raiz):
     es_valido = True
     i = 0
@@ -107,11 +106,7 @@ def validar_while(codigo,num_linea):
     else:
         return not es_valido
 
-
-
 """validar_declaracion_funcion"""
-
-
 def validar_declaracion_funcion(raiz):
     filtro1 = cArbol.construir_variables_parametros(raiz)
     filtro2 = cArbol.construir_argumento(filtro1)
@@ -131,7 +126,6 @@ def validar_declaracion_funcion(raiz):
             return raiz
     else:
         return None
-
 
 """validar_llamada_funcion"""
 def validar_llamada_funcion(raiz):
