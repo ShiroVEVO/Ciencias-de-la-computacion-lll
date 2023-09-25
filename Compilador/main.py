@@ -2,6 +2,7 @@ from Recursos import Recursos as r
 from Analizador_Lexico import Separador as s
 from Recursos import ArbolSintaxisAbstracta as asa
 from Analizador_Sintactico import AnalizadorSintactico as analizadors
+from Analizador_Sintactico import EstructurasAtomicas as eAtomicas
 from Recursos import Nodo as nodo
 
 # ---------------- PRUEBAS ANALIZADOR LEXICO --------------------
@@ -101,8 +102,8 @@ if(y2 != None):
     asa.imprimir_asa(y2)
 else: 
    print("La condicion es invalida.")
-"""
 
+"""
 # ----------------- 5. Pruebas argumentos
 
 tokens1 = [[['LITERAL CADENA'], ['"']],
@@ -112,15 +113,15 @@ tokens1 = [[['LITERAL CADENA'], ['"']],
            [['CARÁCTER PUNTUACIÓN'], [',']],
            [['IDENTIFICADOR'], ['fffff']]]
 x = asa.crear_asa_comentario(tokens1)
-y = analizadors.validar_argumentos_printf(x, 0, 1)
-y1 = analizadors.validar_argumentos_printf(y, 1, 2)
+y = eAtomicas.validar_argumentos_printf(x, 0, 1)
+y1 = eAtomicas.validar_argumentos_printf(y, 1, 2)
 if (y1 != None):
     print("La condición es valida, ahora el arbol es: ")
     asa.imprimir_asa(y1)
 else:
     print("La condicion es invalida.")
-"""
 
+"""
 # ----------------- 5. Pruebas declaración función
 tokens1 = [[['PALABRA RESERVADA'], ['int']],
            [['IDENTIFICADOR'], ['pedro']],
@@ -142,7 +143,7 @@ else:
     print("La declaración es invalida.")
 """
 # ------------------ 7. Pruebas Asignacion
-
+"""
 arboles = []
 for linea in codigo:
       arboles.append(asa.crear_asa_linea(s.separador(linea)))
@@ -152,7 +153,7 @@ for linea in codigo:
 asa.imprimir_asa(arboles[29])
 print(analizadors.validar_asignacion(arboles[29]))
 """
-
+"""
 # ------------------ 8. Pruebas while
 
 arboles = []
