@@ -31,8 +31,9 @@ int main() {
     int resultado_suma = suma(num1, num2);
     printf("La suma de " + num1 + " y " + num2 + "es " + resultado_suma);
     int max = maximo(num1, num2);
-    printf("El máximo entre " + 1 + " y " + num2 + "es " + max);/*
-        Se usa la funcion imprimirSerie
+    printf("El máximo entre " + 1 + " y " + num2 + "es " + max);/*asdad*/
+    /*
+    Se usa la funcion imprimirSerie
         todo dentro de un comentario
         con una inicialización diferente
     */

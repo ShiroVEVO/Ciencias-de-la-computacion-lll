@@ -9,6 +9,11 @@ from Analizador_Sintactico import EstructurasAtomicas as eAtomica
 codigo = r.leer_archivo('Compilador/archivo.c')
 tokens = []
 i = 0
+
+print(analizadors.validar_linea_importe(codigo,0))
+print(analizadors.validar_comentario_linea(codigo,31))
+print(analizadors.validar_comentario_multilinea(codigo,36))
+print(codigo[36])
 """
 for i, elemento in enumerate(codigo):
    print ("Elemento: #", str(i), ", ", elemento)
@@ -24,7 +29,6 @@ for elemento in tokens:
 
 
 #-------------- PRUEBAS ANALIZADOR SINTACTICO ------------------
-
 """
 x = eAtomica.validar_bloque(codigo,1,"}")
 
@@ -35,7 +39,6 @@ for elemento in x:
 x = asa.crear_asa_programa(codigo)
 asa.imprimir_asa(x)
 """
-
 #----------------- 1. Pruebas Operación matematica (REVISADO)
 """
 tokens = [[['NUMERO ENTERO'], ['aweqwqa']],
@@ -108,7 +111,7 @@ else:
    print("La condicion es invalida.")
 """
 # ----------------- 5. Pruebas argumentos (REVISADO)
-
+"""
 tokens1 = [[['LITERAL CADENA'], ['"']],
            [['IDENTIFICADOR'], ['pedro']],
            [['IDENTIFICADOR'], ['pascal']],
@@ -123,7 +126,7 @@ if (y != None):
     asa.imprimir_asa(y)
 else:
     print("La condicion es invalida.")
-
+"""
 # ----------------- 6. Pruebas declaración función (REVISADO)
 """
 tokens1 = [[['PALABRA RESERVADA'], ['int']],
