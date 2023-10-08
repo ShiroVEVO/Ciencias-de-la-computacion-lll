@@ -14,12 +14,10 @@ for linea in codigo:
       tokens.extend(s.separador(linea))
 
 x = asa.crear_asa_programa(codigo)
-asa.imprimir_asa(x)
-
-pi = eAtomica.validar_bloque(x,36,"*/")
-print("-----la sangre de cristo tiene poder")
-for elemento in pi: 
-    print(elemento.valor)
+hijos = x.get_hijos()
+for hijo in hijos:
+    asa.imprimir_asa(analizadors.simplificar_linea(hijo))
+    
 
 
 #print(analizadors.validar_linea_importe(codigo,0))

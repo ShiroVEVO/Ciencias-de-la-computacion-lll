@@ -161,7 +161,7 @@ def validar_condicion(raiz, inicial, final):
     hijos = raiz.hijos[inicial:final + 1]
     estructura = [['IDENTIFICADOR', 'COMPARACIÓN'], ['OPERADOR LÓGICO'], ['IDENTIFICADOR', 'COMPARACIÓN']]
     estructuraB = [['OPERADOR LÓGICO'], 
-                   ['IDENTIFICADOR', 'COMPARACIÓN','OPERADOR LÓGICO']]  # DEFINIRLO CON IF SEGUN LA LONGITUD DIFERENCIA ENTRE INICIAL Y FINAL
+                   ['IDENTIFICADOR', 'COMPARACIÓN','OPERADOR LÓGICO']] 
     valor_papa = [['CONDICIÓN'], ['']]
     if (final + 1 - inicial) == 3:
         if validar_estructura(estructura, hijos) and hijos[1].valor[1][0] != '!':
