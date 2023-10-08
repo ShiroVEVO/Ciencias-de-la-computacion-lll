@@ -30,7 +30,12 @@ Las lineas pueden ser:
 Cada una de estas debe ser un metodo, pero primero deberia simplificarse la linea o el arbol mediante los atomicos.
 """
 def simplificar_linea(raiz):
-    return None
+    filtro1 = cArbol.construir_cadena(raiz)
+    filtro2 = cArbol.construir_variables_parametro(filtro1)
+    """
+    filtro2 = cArbol.construir_parametros(filtro1)
+    filtro3 = cArbol.construir_argumentos(filtro2)"""
+    return filtro2
 
 def validar_asignacion(raiz):
     es_valido = True
@@ -125,11 +130,7 @@ def validar_while(codigo,num_linea):
 
 """validar_declaracion_funcion"""
 def validar_declaracion_funcion(raiz):
-    filtro1 = cArbol.construir_variables_parametros(raiz)
-    filtro2 = cArbol.construir_argumento(filtro1)
-    filtro3 = cArbol.construir_argumentos(filtro2)
-
-    hijos = filtro3.get_hijos()
+    hijos = raiz.get_hijos()
 
     estructura = [['DECLARACIÓN VARIABLE/PARAMETROS'], ['SÍMBOLO ESPECIAL'], ['ARGUMENTOS'],
                   ['SÍMBOLO ESPECIAL'], ['SÍMBOLO ESPECIAL']]
@@ -146,11 +147,7 @@ def validar_declaracion_funcion(raiz):
 
 """validar_llamada_funcion"""
 def validar_llamada_funcion(raiz):
-    filtro1 = cArbol.construir_variables_parametros(raiz)
-    filtro2 = cArbol.construir_argumento(filtro1)
-    filtro3 = cArbol.construir_argumentos(filtro2)
-
-    hijos = filtro3.get_hijos()
+    hijos = raiz.get_hijos()
 
     estructura = [['IDENTIFICADOR'], ['SÍMBOLO ESPECIAL'],
                   ['LLAMADA FUNCION', 'ARGUMENTOS', ],

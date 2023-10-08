@@ -185,6 +185,14 @@ def validar_incremental_decremental(raiz, inicial, final):
     else:
         return None
 
+def validar_cadena(raiz, inicial, final):
+    hijos = raiz.hijos[inicial:final+1]
+    valor_papa = [['CADENA'], [' ']]
+    if hijos[0].valor[0][0] == 'LITERAL DE CADENA' and hijos[-1].valor[0][0] == 'LITERAL DE CADENA':
+        return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
+    else:
+        return None
+
 """validar_argumentos normales:
 Recibe unos "hijos" (lista de nodos cuyo valor son tokens) y valida que estos tengan
 la estructura de un atomico de argumento basico, es decir que tengan un cáracter de 
@@ -194,11 +202,10 @@ variable o de función, un numero entero, un numero flotante o una cadena).
 def validar_argumento(raiz, inicial, final):
     hijos = raiz.hijos[inicial:final + 1]
     valor_papa = [['ARGUMENTO'], ['']]
-    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'DECLARACIÓN VARIABLE/PARAMETROS'],
+    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'CADENA'],
                   ['CARÁCTER PUNTUACIÓN']]
-    estructura2 = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'DECLARACIÓN VARIABLE/PARAMETROS']]
-    if validar_estructura(estructura, hijos) or validar_estructura(estructura2, hijos) or hijos[0].valor[0][
-        0] == "CADENA":
+    estructura2 = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'CADENA']]
+    if validar_estructura(estructura, hijos) or validar_estructura(estructura2, hijos):
         if len(hijos) > 1 and not hijos[1].valor[1][0] == ",":
             return None
         else:
@@ -210,9 +217,9 @@ def validar_argumento(raiz, inicial, final):
 def validar_argumentos_printf(raiz, inicial, final):
     hijos = raiz.hijos[inicial:final + 1]
     valor_papa = [['ARGUMENTO'], ['']]
-    estructura = [['IDENTIFICADOR'], ['OPERADOR MATEMÁTICO']]
+    estructura = [['IDENTIFICADOR', 'CADENA'], ['OPERADOR MATEMÁTICO']]
     estructura2 = [['IDENTIFICADOR']]
-    if validar_estructura(estructura, hijos) or validar_estructura(estructura2, hijos) or hijos[0].valor[0][0] == "CADENA":
+    if validar_estructura(estructura, hijos) or validar_estructura(estructura2, hijos):
         if len(hijos) > 1 and not hijos[1].valor[1][0] == "+":
             return None
         else:
@@ -226,5 +233,14 @@ def validar_argumentos(raiz, inicial, final):
     valor_papa = [['ARGUMENTOS'], ['']]
     for hijo in hijos:
         if hijo == [['ARGUMENTO'], ['']]:
+            final = inicial
+    return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
+
+"""Valida cuando muchos argumentos estan juntos"""
+def validar_parametros(raiz, inicial, final):
+    hijos = raiz.hijos[inicial:final + 1]
+    valor_papa = [['ARGUMENTOS'], ['']]
+    for hijo in hijos:
+        if hijo == [['DECLARACIÓN VARIABLE/PARAMETROS'], ['']]:
             final = inicial
     return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)

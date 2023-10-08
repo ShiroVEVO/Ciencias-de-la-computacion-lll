@@ -4,17 +4,26 @@ from Recursos import ArbolSintaxisAbstracta as asa
 from Analizador_Sintactico import AnalizadorSintactico as analizadors
 from Recursos import Nodo as nodo
 from Analizador_Sintactico import EstructurasAtomicas as eAtomica
+from Analizador_Sintactico import ConstruccionArbol as cArbol
 
 # ---------------- PRUEBAS ANALIZADOR LEXICO --------------------
-codigo = r.leer_archivo('Compilador/archivo.c')
-tokens = []
-i = 0
+codigo = r.leer_archivo('../Compilador/archivo.c')
 
-print(analizadors.validar_linea_importe(codigo,0))
-print(analizadors.validar_comentario_linea(codigo,31))
-print(analizadors.validar_comentario_multilinea(codigo,36))
-print(codigo[36])
+tokens = []
+for linea in codigo:
+      tokens.extend(s.separador(linea))
+
+x = asa.crear_asa_programa(codigo)
+for linea in x.get_hijos():
+      asa.imprimir_asa(analizadors.simplificar_linea(linea))
+
+
+#print(analizadors.validar_linea_importe(codigo,0))
+#print(analizadors.validar_comentario_linea(codigo,31))
+#print(analizadors.validar_comentario_multilinea(codigo,36))
+#print(codigo[36])
 """
+i = 0
 for i, elemento in enumerate(codigo):
    print ("Elemento: #", str(i), ", ", elemento)
 for clave, valor in r.contar_elemento(tokens, 0).items():
@@ -27,8 +36,7 @@ for elemento in tokens:
    print (elemento)
 """
 
-
-#-------------- PRUEBAS ANALIZADOR SINTACTICO ------------------
+# -------------- PRUEBAS ANALIZADOR SINTACTICO ------------------
 """
 x = eAtomica.validar_bloque(codigo,1,"}")
 
@@ -39,7 +47,7 @@ for elemento in x:
 x = asa.crear_asa_programa(codigo)
 asa.imprimir_asa(x)
 """
-#----------------- 1. Pruebas Operación matematica (REVISADO)
+# ----------------- 1. Pruebas Operación matematica (REVISADO)
 """
 tokens = [[['NUMERO ENTERO'], ['aweqwqa']],
          [['OPERADOR MATEMÁTICO'], ['+']],
@@ -53,7 +61,7 @@ if(y != None):
 else: 
    print("La operación matematica es invalida")
 """
-#----------------- 2. Pruebas declaración variable o parametros (REVISADO)
+# ----------------- 2. Pruebas declaración variable o parametros (REVISADO)
 """
 tokens = [[['PALABRA RESERVADA'], ['int']],
          [['IDENTIFICADOR'], ['a']]]
@@ -65,7 +73,7 @@ if(y != None):
 else: 
    print("La declaración es invalida.")
 """
-#----------------- 3. Pruebas comparación (REVISADO)
+# ----------------- 3. Pruebas comparación (REVISADO)
 """
 tokens = [[['IDENTIFICADOR'], ['pedro']],
          [['OPERADOR COMPARACIÓN'], ['==']],
@@ -78,7 +86,7 @@ if(y != None):
 else: 
    print("La declaración es invalida.")
 """
-#----------------- 4. Pruebas condición (REVISADO)
+# ----------------- 4. Pruebas condición (REVISADO)
 """
 tokens = [[['IDENTIFICADOR'], ['pedro']],
          [['OPERADOR COMPARACIÓN'], ['==']],
@@ -88,7 +96,7 @@ tokens = [[['IDENTIFICADOR'], ['pedro']],
          [['OPERADOR COMPARACIÓN'], ['==']],
          [['IDENTIFICADOR'], ['abivail']]]
 
-x = asa.crear_asa_linea(tokens)
+x = asa.crear_asa_linea(tokens2)
 y = eAtomica.validar_comparacion(x,0,2)
 if(y != None):
     print("La comparación es valida, ahora el arbol es: ")
@@ -112,16 +120,21 @@ else:
 """
 # ----------------- 5. Pruebas argumentos (REVISADO)
 """
-tokens1 = [[['LITERAL CADENA'], ['"']],
+tokens1 = [[['SÍMBOLO ESPECIAL'], ['(']],
+           [['LITERAL DE CADENA'], ['"']],
            [['IDENTIFICADOR'], ['pedro']],
            [['IDENTIFICADOR'], ['pascal']],
-           [['LITERAL CADENA'], ['"']],
+           [['LITERAL DE CADENA'], ['"']],
            [['CARÁCTER PUNTUACIÓN'], [',']],
-           [['IDENTIFICADOR'], ['fffff']]]
-x = asa.crear_asa_comentario(tokens1)
-y = eAtomica.validar_argumentos_printf(x, 0, 1)
-#y1 = eAtomica.validar_argumentos_printf(y, 1, 2)
-if (y != None):
+           [['LITERAL DE CADENA'], ['"']],
+           [['IDENTIFICADOR'], ['pedro']],
+           [['IDENTIFICADOR'], ['pascal']],
+           [['LITERAL DE CADENA'], ['"']],
+           [['SÍMBOLO ESPECIAL'], [')']]]
+x = asa.crear_asa_linea(tokens1)
+y = cArbol.construir_comentario(x)
+z = (y)
+if (z != None):
     print("La condición es valida, ahora el arbol es: ")
     asa.imprimir_asa(y)
 else:
