@@ -3,12 +3,14 @@ int suma(int a,int b){
     return a+b;
 }
 int maximo(int a, int b){
+/*
     if(a > b){
         return a;
     }else{
         return b;
     }
 }
+
 int suma_hasta_n(int n) {
     int resultado = 0;
     int i = 1;
@@ -36,8 +38,9 @@ int main() {
     Se usa la funcion imprimirSerie
         todo dentro de un comentario
         con una inicialización diferente
-    */
+    *//*
     printf("Imprimir serie del 1 al 10:\n");
     imprimirSerie(1, 10);
     return 0;
 }
+*/

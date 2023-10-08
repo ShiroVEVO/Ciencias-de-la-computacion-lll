@@ -7,25 +7,45 @@ from Analizador_Sintactico import EstructurasAtomicas as eAtomica
 from Analizador_Sintactico import ConstruccionArbol as cArbol
 
 # ---------------- PRUEBAS ANALIZADOR LEXICO --------------------
-codigo = r.leer_archivo('Compilador/archivo.c')
+codigo = r.leer_archivo('../Compilador/archivo.c')
 
+"""tokens = [[['PALABRA RESERVADA'], ['int']],
+          [['IDENTIFICADOR'], ['maximo']],
+          [['SÍMBOLO ESPECIAL'], ['(']],
+          [['PALABRA RESERVADA'], ['int']],
+          [['IDENTIFICADOR'], ['a']],
+          [['CARÁCTER PUNTUACIÓN'], [',']],
+          [['PALABRA RESERVADA'], ['int']],
+          [['IDENTIFICADOR'], ['b']],
+          [['CARÁCTER PUNTUACIÓN'], [',']],
+          [['PALABRA RESERVADA'], ['int']],
+          [['IDENTIFICADOR'], ['c']],
+    #      [['CARÁCTER PUNTUACIÓN'], [',']],
+     #     [['IDENTIFICADOR'], ['c']],
+      #    [['CARÁCTER PUNTUACIÓN'], [',']],
+       #   [['CADENA'], ['c']],
+          [['SÍMBOLO ESPECIAL'], [')']],
+          [['SÍMBOLO ESPECIAL'], ['{']]]"""
 tokens = []
+
 for linea in codigo:
-      tokens.extend(s.separador(linea))
+    tokens.extend(s.separador(linea))
 
 x = asa.crear_asa_programa(codigo)
-asa.imprimir_asa(x)
+for linea in x.get_hijos():
+    if analizadors.simplificar_linea(linea) is not None:
+        asa.imprimir_asa(analizadors.simplificar_linea(linea))
+    else:
+        print("Código no válido")
 
-pi = eAtomica.validar_bloque(x,36,"*/")
-print("-----la sangre de cristo tiene poder")
-for elemento in pi: 
-    print(elemento.valor)
 
+"""
 
 #print(analizadors.validar_linea_importe(codigo,0))
 #print(analizadors.validar_comentario_linea(codigo,31))
 #print(analizadors.validar_comentario_multilinea(codigo,36))
 #print(codigo[36])
+"""
 """
 i = 0
 for i, elemento in enumerate(codigo):

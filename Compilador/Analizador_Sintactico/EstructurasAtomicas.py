@@ -219,9 +219,23 @@ def validar_argumentos_printf(raiz, inicial, final):
     hijos = raiz.hijos[inicial:final + 1]
     valor_papa = [['ARGUMENTO'], ['']]
     estructura = [['IDENTIFICADOR', 'CADENA'], ['OPERADOR MATEMÁTICO']]
-    estructura2 = [['IDENTIFICADOR']]
+    estructura2 = [['IDENTIFICADOR', 'CADENA']]
     if validar_estructura(estructura, hijos) or validar_estructura(estructura2, hijos):
         if len(hijos) > 1 and not hijos[1].valor[1][0] == "+":
+            return None
+        else:
+            return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
+    else:
+        return None
+
+def validar_parametro(raiz, inicial, final):
+    hijos = raiz.hijos[inicial:final + 1]
+    valor_papa = [['PARAMETRO'], ['']]
+    estructura = [['DECLARACIÓN VARIABLE/PARAMETROS'],
+                  ['CARÁCTER PUNTUACIÓN']]
+    estructura2 = [['DECLARACIÓN VARIABLE/PARAMETROS']]
+    if validar_estructura(estructura, hijos) or validar_estructura(estructura2, hijos):
+        if len(hijos) > 1 and not hijos[1].valor[1][0] == ",":
             return None
         else:
             return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
@@ -235,13 +249,16 @@ def validar_argumentos(raiz, inicial, final):
     for hijo in hijos:
         if hijo == [['ARGUMENTO'], ['']]:
             final = inicial
+        else:
+            return None
     return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
 
-"""Valida cuando muchos argumentos estan juntos"""
+"""Valida cuando muchos parametros estan juntos"""
 def validar_parametros(raiz, inicial, final):
     hijos = raiz.hijos[inicial:final + 1]
-    valor_papa = [['ARGUMENTOS'], ['']]
+    valor_papa = [['PARAMETROS'], ['']]
     for hijo in hijos:
-        if hijo == [['DECLARACIÓN VARIABLE/PARAMETROS'], ['']]:
-            final = inicial
+        print(hijo.valor[0])
+        if hijo.valor[0] != ['PARAMETRO']:
+            return None
     return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)

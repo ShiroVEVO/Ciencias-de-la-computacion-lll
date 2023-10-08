@@ -32,10 +32,10 @@ Cada una de estas debe ser un metodo, pero primero deberia simplificarse la line
 def simplificar_linea(raiz):
     filtro1 = cArbol.construir_cadena(raiz)
     filtro2 = cArbol.construir_variables_parametro(filtro1)
-    """
-    filtro2 = cArbol.construir_parametros(filtro1)
-    filtro3 = cArbol.construir_argumentos(filtro2)"""
-    return filtro2
+    filtro3 = cArbol.construir_parametro(filtro2)
+    #filtro4 = cArbol.construir_argumento(filtro3)
+    #filtro5 = cArbol.construir_argumentos_parametros(filtro4)
+    return filtro3
 
 def validar_asignacion(raiz):
     es_valido = True
