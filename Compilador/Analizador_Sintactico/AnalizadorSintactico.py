@@ -70,7 +70,7 @@ def validar_asignacion(raiz):
     Identificador = Operacion matematica/NumeroEntero/Identificador/NumeroFlotante/cadenas
     """
 
-def validar_while(codigo,num_linea):
+"""def validar_while(codigo,num_linea):
     i = 2
     es_valido = True
     raiz = asa.crear_asa_linea(s.separador(codigo[num_linea]))
@@ -115,10 +115,10 @@ def validar_while(codigo,num_linea):
     #while pi2.tamano() > 1:
     for elemento in pi2:
         print(elemento)
-        """
+
         ACA DEBE IR UN MONTON DE CODIGO que aun no tenemos, para que valide todas las estructuras de control
         lineas de asignación, lineas de incremento, return... y no se me ocurre ninguna otra
-        """
+
 
     print("..........fin pila..........")
 
@@ -127,6 +127,7 @@ def validar_while(codigo,num_linea):
             return es_valido
     else:
         return not es_valido
+"""
 
 """validar_declaracion_funcion"""
 def validar_declaracion_funcion(raiz):
@@ -163,8 +164,7 @@ def validar_llamada_funcion(raiz):
 
 ################
 
-def validar_linea_importe(codigo,num_linea):
-    raiz = asa.crear_asa_linea(s.separador(codigo[num_linea]))
+def validar_linea_importe(raiz):
     hijos = raiz.get_hijos()
     es_valido = True
     i = 0
@@ -184,8 +184,7 @@ def validar_linea_importe(codigo,num_linea):
         i += 1
     return es_valido
     
-def validar_linea_retorno(codigo,num_linea):
-    raiz = asa.crear_asa_linea(s.separador(codigo[num_linea]))
+def validar_linea_retorno(raiz):
     hijos = raiz.get_hijos()
     es_valido = True
     estructura = [['PALABRA RESERVADA'],
@@ -197,9 +196,8 @@ def validar_linea_retorno(codigo,num_linea):
     else: 
         return es_valido
 
-def validar_comentario_linea(codigo,num_linea):
+def validar_comentario_linea(raiz):
     es_valido = True
-    raiz = asa.crear_asa_linea(s.separador(codigo[num_linea]))
     hijos = raiz.get_hijos()
     if hijos[0].valor[1][0] == '//':
         return es_valido
@@ -207,7 +205,7 @@ def validar_comentario_linea(codigo,num_linea):
         return not es_valido
 
 def validar_comentario_multilinea(codigo,num_linea):
-    raiz = asa.crear_asa_linea(s.separador(codigo[num_linea]))
+    """raiz = asa.crear_asa_linea(s.separador(codigo[num_linea]))
     hijos = raiz.get_hijos()
     if hijos[0].valor[1][0] == '/*':
         pi = eAtomica.validar_bloque(codigo,num_linea,'*/')
@@ -216,4 +214,5 @@ def validar_comentario_multilinea(codigo,num_linea):
         else: 
             return None
     else:
-        return None
+    """
+    return None

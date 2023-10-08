@@ -23,8 +23,8 @@ Busca crear un arbol de sintaxis abstracta (ASA/AST) a partir de unos "tokens" q
 estos tokens se espera que correspondan unicamente a los tokens asociados a una linea en especifico, 
 inicia creando un nodo "linea" que será la raiz del arbol y le agrega unos nodos hijos que corresponden
 a los tokens de esa linea."""
-def crear_asa_linea(tokens):
-    raiz = nodo.Nodo("linea")  # crea el nodo base
+def crear_asa_linea(tokens,i):
+    raiz = nodo.Nodo([["LINEA"], [i+1]])  # crea el nodo base
     for token in tokens:  # por cada token le agrega un nodo hijo a la raiz
         raiz.agregar_hijo(nodo.Nodo(token))
     return raiz
@@ -36,10 +36,12 @@ por tanto recibe un codigo general, que debe ser un arreglo de strings correspon
 del codigo, crea un nodo raiz denominado "programa" y le va agregando "hijos" que corresponden
 a nodos "linea" que tienen asociados como hijos los tokens de esa linea"""
 def crear_asa_programa(codigo):
-    raiz = nodo.Nodo("programa")
+    raiz = nodo.Nodo([["PROGRAMA"],['']])
+    i = 0
     for elemento in codigo:
         tokens_linea = s.separador(elemento)
-        raiz.agregar_hijo(crear_asa_linea(tokens_linea))
+        raiz.agregar_hijo(crear_asa_linea(tokens_linea,i))
+        i += 1
     return raiz
 
 """imprimir_asa:

@@ -7,15 +7,19 @@ from Analizador_Sintactico import EstructurasAtomicas as eAtomica
 from Analizador_Sintactico import ConstruccionArbol as cArbol
 
 # ---------------- PRUEBAS ANALIZADOR LEXICO --------------------
-codigo = r.leer_archivo('../Compilador/archivo.c')
+codigo = r.leer_archivo('Compilador/archivo.c')
 
 tokens = []
 for linea in codigo:
       tokens.extend(s.separador(linea))
 
 x = asa.crear_asa_programa(codigo)
-for linea in x.get_hijos():
-      asa.imprimir_asa(analizadors.simplificar_linea(linea))
+asa.imprimir_asa(x)
+
+pi = eAtomica.validar_bloque(x,36,"*/")
+print("-----la sangre de cristo tiene poder")
+for elemento in pi: 
+    print(elemento.valor)
 
 
 #print(analizadors.validar_linea_importe(codigo,0))

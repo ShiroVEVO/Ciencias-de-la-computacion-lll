@@ -17,7 +17,6 @@ def construir_variables_parametro(raiz):
             i += 1
     return raiz
 
-
 def construir_parametros(raiz):
     i = 0
     hijos = raiz.get_hijos()
@@ -38,7 +37,6 @@ def construir_parametros(raiz):
         else:
             i += 1
     return raiz
-
 
 def construir_argumentos(raiz):
     i = 0
