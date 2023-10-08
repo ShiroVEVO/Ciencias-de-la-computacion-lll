@@ -216,3 +216,62 @@ def validar_comentario_multilinea(codigo,num_linea):
     else:
     """
     return None
+
+""" FUNCIONAL
+def simplificar_linea(linea):
+    hijos = linea.get_hijos()
+    nueva_linea = linea
+    i = 0
+    while i <= len(hijos)-1:
+        if hijos[i].valor[0][0] == 'OPERADOR MATEMÁTICO':
+            aux = eAtomica.validar_operacion_matematica(linea,i-1,i+1)
+            if aux != None:
+                nueva_linea = simplificar_linea(aux)
+        
+        i += 1
+    return nueva_linea
+"""
+
+def simplificar_linea(linea):
+    hijos = linea.get_hijos()
+    nueva_linea = linea
+    i = 0
+    while i <= len(hijos)-1:
+        if hijos[i].valor[0][0] == 'OPERADOR MATEMÁTICO':
+            aux = eAtomica.validar_operacion_matematica(linea,i-1,i+1)
+            if aux != None:
+                nueva_linea = simplificar_linea(aux)
+
+        elif hijos[i].valor[0][0] == 'PALABRA RESERVADA':
+            aux = eAtomica.validar_declaracion_variable_parametros(linea, i, i+1)
+            if aux != None:
+                nueva_linea = simplificar_linea(aux)
+
+        elif hijos[i].valor[0][0] == 'OPERADOR COMPARACIÓN':
+            aux = eAtomica.validar_comparacion(linea,i-1,i+1)
+            if aux != None:
+                nueva_linea = simplificar_linea(aux)
+
+        elif hijos[i].valor[0][0] == 'CARÁCTER INC-DEC':
+            aux = eAtomica.validar_incremental_decremental(linea,i-1,i)
+            if aux != None:
+                nueva_linea = simplificar_linea(aux)
+        #
+        elif hijos[i].valor[0][0] == 'LITERAL DE CADENA':
+            aux = cArbol.construir_cadena(linea)
+            if aux != None:
+                nueva_linea = simplificar_linea(aux)
+
+        elif hijos[i].valor[0][0] == 'OPERADOR LÓGICO':
+            aux = eAtomica.validar_condicion(linea,i-1,i+1)
+            if aux != None:
+                nueva_linea = simplificar_linea(aux)
+
+        """
+        elif de parametros
+        
+        elif de argumentos
+        """
+        i += 1
+    return nueva_linea
+
