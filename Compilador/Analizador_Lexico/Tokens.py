@@ -1,7 +1,7 @@
 palabras_reservadas = ['auto', 'break', 'case', 'char', 'const', 'continue', 'default', 'do',
                        'double', 'else', 'enum', 'extern', 'float', 'for', 'got', 'if', 'int',
                        'long', 'register', 'return', 'short', 'signed', 'sizeof', 'static',
-                       'struct', 'switch', 'typedef', 'union', 'unsigned', 'void', 'volatile', 'while']
+                       'struct', 'switch', 'typedef', 'union', 'unsigned', 'void', 'volatile', 'while','include']
 
 oAsignacion = ['=', '+=', '-=', '*=', '/=', '&=']
 

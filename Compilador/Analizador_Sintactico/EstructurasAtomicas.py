@@ -2,6 +2,7 @@ from Analizador_Lexico import Separador as s
 from Recursos import Pila as pila
 from Recursos import ArbolSintaxisAbstracta as asa
 
+
 """validar_bloque:
 
 Recibe todo un bloque de codigo como parametro "codigo", un numero de linea "num_linea" donde 
