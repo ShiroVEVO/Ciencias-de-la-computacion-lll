@@ -17,7 +17,7 @@ x = asa.crear_asa_programa(codigo)
 hijos = x.get_hijos()
 asa.imprimir_asa(hijos[14])
 for hijo in hijos:
-    analizadors.validar_EstructuraGrande_Auxiliar(analizadors.simplificar_linea(hijo))
+    asa.imprimir_asa(analizadors.simplificar_linea(hijo))
 
 
 

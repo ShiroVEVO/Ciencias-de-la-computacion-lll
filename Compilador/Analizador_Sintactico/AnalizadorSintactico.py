@@ -244,6 +244,19 @@ def simplificar_condicion(linea):
         i += 1
     return nueva_linea
 
+def simplificar_argumentos_parametros(linea):
+    hijos = linea.get_hijos()
+    nueva_linea = linea
+    i = 0
+    while i <= len(hijos) - 1:
+        if hijos[i].valor[0][0] == 'SÍMBOLO ESPECIAL' and hijos[i].valor[1][0] == '(':
+            aux = eAtomica.validar_parametro(linea, i+1, i+3) or eAtomica.validar_argumento(linea, i+1, i+3) \
+                  or eAtomica.validar_argumento_printf(linea, i+1, i+3)
+            if aux != None:
+                nueva_linea = simplificar_linea(aux)
+        i += 1
+    return nueva_linea
+
 def simplificar_linea(linea):
     nueva_linea = simplificar_op_matematica(linea)
     nueva_linea = simplificar_declaracion(nueva_linea)
@@ -251,6 +264,7 @@ def simplificar_linea(linea):
     nueva_linea = simplificar_incremental_decremental(nueva_linea)
     nueva_linea = simplificar_literal_cadena(nueva_linea)
     nueva_linea = simplificar_condicion(nueva_linea)
+    nueva_linea = simplificar_argumentos_parametros(nueva_linea)
     return nueva_linea
 
 
