@@ -12,8 +12,8 @@ Las lineas pueden ser:
 - asignación
 - declaracion
 - (HECHO) importe
-- declaracion de funcion
-- llamado de funcion 
+- (HECHO) declaracion de funcion
+- (HECHO) llamado de funcion 
 - (HECHO) retorno
 - (HECHO) Comentario de una linea
 - (HECHO) Comentario Multilinea
@@ -29,13 +29,6 @@ Las lineas pueden ser:
 
 Cada una de estas debe ser un metodo, pero primero deberia simplificarse la linea o el arbol mediante los atomicos.
 """
-def simplificar_linea(raiz):
-    filtro1 = cArbol.construir_cadena(raiz)
-    filtro2 = cArbol.construir_variables_parametro(filtro1)
-    filtro3 = cArbol.construir_parametro(filtro2)
-    #filtro4 = cArbol.construir_argumento(filtro3)
-    #filtro5 = cArbol.construir_argumentos_parametros(filtro4)
-    return filtro3
 
 def validar_asignacion(raiz):
     es_valido = True
@@ -132,35 +125,49 @@ def validar_asignacion(raiz):
 """validar_declaracion_funcion"""
 def validar_declaracion_funcion(raiz):
     hijos = raiz.get_hijos()
-
-    estructura = [['DECLARACIÓN VARIABLE/PARAMETROS'], ['SÍMBOLO ESPECIAL'], ['ARGUMENTOS'],
-                  ['SÍMBOLO ESPECIAL'], ['SÍMBOLO ESPECIAL']]
-    estructura2 = [['DECLARACIÓN VARIABLE/PARAMETROS'], ['SÍMBOLO ESPECIAL'], ['ARGUMENTOS'],
+    es_valido = True
+    estructura = [['DECLARACIÓN VARIABLE/PARAMETROS'],
+                  ['SÍMBOLO ESPECIAL'],
+                  ['PARAMETRO', 'DECLARACIÓN VARIABLE/PARAMETROS'],
+                  ['SÍMBOLO ESPECIAL'],
+                  ['SÍMBOLO ESPECIAL']]
+    estructura2 = [['DECLARACIÓN VARIABLE/PARAMETROS'],
+                   ['SÍMBOLO ESPECIAL'],
+                   ['PARAMETRO', 'DECLARACIÓN VARIABLE/PARAMETROS'],
+                   ['SÍMBOLO ESPECIAL']]
+    estructura3 = [['DECLARACIÓN VARIABLE/PARAMETROS'],
+                   ['SÍMBOLO ESPECIAL'],
+                   ['SÍMBOLO ESPECIAL']]
+    estructura4 = [['DECLARACIÓN VARIABLE/PARAMETROS'],
+                   ['SÍMBOLO ESPECIAL'],
+                   ['SÍMBOLO ESPECIAL'],
                    ['SÍMBOLO ESPECIAL']]
 
-    if eAtomica.validar_estructura(estructura, hijos) or eAtomica.validar_estructura(estructura2, hijos):
+    if eAtomica.validar_estructura(estructura, hijos) or eAtomica.validar_estructura(estructura2, hijos)\
+            or eAtomica.validar_estructura(estructura3, hijos) or eAtomica.validar_estructura(estructura4, hijos):
         if not hijos[1].valor[1][0] == '(' and not hijos[3].valor[1][0] == ')':
-            return None
+            return not es_valido
         else:
-            return raiz
+            return es_valido
     else:
-        return None
+        return not es_valido
 
-"""validar_llamada_funcion"""
-def validar_llamada_funcion(raiz):
+def validar_printf(raiz):
     hijos = raiz.get_hijos()
-
-    estructura = [['IDENTIFICADOR'], ['SÍMBOLO ESPECIAL'],
-                  ['LLAMADA FUNCION', 'ARGUMENTOS', ],
-                  ['SÍMBOLO ESPECIAL'], ['CARÁCTER PUNTUACIÓN']]
+    es_valido = True
+    estructura = [['IDENTIFICADOR'],
+                  ['SÍMBOLO ESPECIAL'],
+                  ['ARGUMENTO', 'CADENA', 'IDENTIFICADOR', 'OPERACIÓN MATEMATICA', 'NUMERO ENTERO', 'NUMERO FLOTANTE',],
+                  ['SÍMBOLO ESPECIAL'],
+                  ['CARÁCTER PUNTUACIÓN']]
 
     if eAtomica.validar_estructura(estructura, hijos):
-        if not hijos[1].valor[1][0] == '(' and not hijos[3].valor[1][0] == ')' and not hijos[4].valor[1][0] == ';':
-            return None
+        if not hijos[0].valor[1][0] == 'printf' and not hijos[1].valor[1][0] == '(' and not hijos[3].valor[1][0] == ')' and not hijos[4].valor[1][0] == ';':
+            return not es_valido
         else:
-            return raiz
+            return es_valido
     else:
-        return None
+        return not es_valido
 
 ################
 
@@ -267,11 +274,26 @@ def simplificar_linea(linea):
             if aux != None:
                 nueva_linea = simplificar_linea(aux)
 
-        """
-        elif de parametros
-        
-        elif de argumentos
-        """
+        elif hijos[i].valor[0][0] == 'SÍMBOLO ESPECIAL' and hijos[i].valor[1][0] == '(':
+            aux = eAtomica.validar_parametro(linea, i+1, i+3) or eAtomica.validar_argumento(linea, i+1, i+3) or eAtomica.validar_argumento_printf(linea, i + 1, i + 3)
+            if aux != None:
+                nueva_linea = simplificar_linea(aux)
+
         i += 1
     return nueva_linea
 
+def validar_EstructuraGrande_Auxiliar(linea):
+    hijos = linea.get_hijos()
+    nueva_linea = linea
+    i = 0
+    while i <= len(hijos)-1:
+        #if validar_printf(linea):
+        #    print(f"Es válida la linea {linea.valor[1][0]}")
+        #else:
+        #    print(f"No es válida la linea {linea.valor[1][0]}")
+        if validar_declaracion_funcion(linea):
+            print(f"Es válida la linea {linea.valor[1][0]}")
+        else:
+            print(f"No es válida la linea {linea.valor[1][0]}")
+        i += 1
+    return nueva_linea

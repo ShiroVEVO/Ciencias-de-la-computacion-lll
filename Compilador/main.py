@@ -16,7 +16,8 @@ for linea in codigo:
 x = asa.crear_asa_programa(codigo)
 hijos = x.get_hijos()
 for hijo in hijos:
-    asa.imprimir_asa(analizadors.simplificar_linea(hijo))
+    analizadors.validar_EstructuraGrande_Auxiliar(analizadors.simplificar_linea(hijo))
+
 
 
 

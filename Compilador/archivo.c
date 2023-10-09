@@ -2,8 +2,7 @@
 int suma(int a,int b){
     return a+b;
 }
-int maximo(int a, int b){
-/*
+int maximo(int a, int b, int c, int d){
     if(a > b){
         return a;
     }else{
@@ -27,10 +26,10 @@ void imprimirSerie(int inicio, int fin) {
     printf("\n");
 }
 int main() {
-    int num1=3+2+4;
+    int num1=3+2+4-10*9;
     int num2=7;
     // Utilizar la función suma
-    int resultado_suma = suma(num1, num2);
+    int resultado_suma = suma(num1, num2, num3, num4);
     printf("La suma de " + num1 + " y " + num2 + "es " + resultado_suma);
     int max = maximo(num1, num2);
     printf("El máximo entre " + 1 + " y " + num2 + "es " + max);/*asdad*/
@@ -43,4 +42,3 @@ int main() {
     imprimirSerie(1, 10);
     return 0;
 }
-*/
