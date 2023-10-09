@@ -17,8 +17,6 @@ Las lineas pueden ser:
 - (HECHO) retorno
 - (HECHO) Comentario de una linea
 - (HECHO) Comentario Multilinea
-- debido a la separacion del for, condicion
-- debido a la separacion del for, incremento/decremento
 - while
 - if
 - else
@@ -238,7 +236,6 @@ def simplificar_linea(linea):
     nueva_linea = simplificar_literal_cadena(nueva_linea)
     nueva_linea = simplificar_condicion(nueva_linea)
     return nueva_linea
-
 
 # HASTA ACA LLEGA LO UTIL
 
