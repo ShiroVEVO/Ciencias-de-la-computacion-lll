@@ -170,9 +170,94 @@ def validar_printf(raiz):
         return not es_valido
 
 ################
+def simplificar_op_matematica(linea):
+    hijos = linea.get_hijos()
+    nueva_linea = linea
+    i = 0
+    while i <= len(hijos)-1:
+        if hijos[i].valor[0][0] == 'OPERADOR MATEMÁTICO':
+            aux = eAtomica.validar_operacion_matematica(linea,i-1,i+1)
+            if aux != None:
+                nueva_linea = simplificar_op_matematica(aux)
+        i += 1
+    return nueva_linea
 
-def validar_linea_importe(raiz):
-    hijos = raiz.get_hijos()
+def simplificar_declaracion(linea):
+    hijos = linea.get_hijos()
+    nueva_linea = linea
+    i = 0
+    while i <= len(hijos)-1:
+        if hijos[i].valor[0][0] == 'PALABRA RESERVADA':
+            aux = eAtomica.validar_declaracion_variable_parametros(nueva_linea, i, i+1)
+            if aux != None:
+                nueva_linea = simplificar_declaracion(aux)
+        i += 1
+    return nueva_linea
+
+def simplificar_comparacion(linea):
+    hijos = linea.get_hijos()
+    nueva_linea = linea
+    i = 0
+    while i <= len(hijos)-1:
+        if hijos[i].valor[0][0] == 'OPERADOR COMPARACIÓN':
+            aux = eAtomica.validar_comparacion(nueva_linea,i-1,i+1)
+            if aux != None:
+                asa.imprimir_asa(aux)
+                nueva_linea = simplificar_comparacion(aux)
+        i += 1
+    return nueva_linea
+
+def simplificar_incremental_decremental(linea):
+    hijos = linea.get_hijos()
+    nueva_linea = linea
+    i = 0
+    while i <= len(hijos)-1:
+        if hijos[i].valor[0][0] == 'CARÁCTER INC-DEC':
+            aux = eAtomica.validar_incremental_decremental(nueva_linea,i-1,i)
+            if aux != None:
+                nueva_linea = simplificar_incremental_decremental(aux)
+        i += 1
+    return nueva_linea
+
+def simplificar_literal_cadena(linea):
+    hijos = linea.get_hijos()
+    nueva_linea = linea
+    i = 0
+    while i <= len(hijos)-1:
+        if hijos[i].valor[0][0] == 'LITERAL DE CADENA':
+            aux = cArbol.construir_cadena(nueva_linea)
+            if aux != None:
+                nueva_linea = simplificar_literal_cadena(aux)
+        i += 1
+    return nueva_linea
+
+def simplificar_condicion(linea):
+    hijos = linea.get_hijos()
+    nueva_linea = linea
+    i = 0
+    while i <= len(hijos)-1:
+        if hijos[i].valor[0][0] == 'OPERADOR LÓGICO':
+            aux = eAtomica.validar_condicion(nueva_linea,i-1,i+1)
+            if aux != None:
+                asa.imprimir_asa(aux)
+                nueva_linea = simplificar_condicion(aux)
+        i += 1
+    return nueva_linea
+
+def simplificar_linea(linea):
+    nueva_linea = simplificar_op_matematica(linea)
+    nueva_linea = simplificar_declaracion(nueva_linea)
+    nueva_linea = simplificar_comparacion(nueva_linea)
+    nueva_linea = simplificar_incremental_decremental(nueva_linea)
+    nueva_linea = simplificar_literal_cadena(nueva_linea)
+    nueva_linea = simplificar_condicion(nueva_linea)
+    return nueva_linea
+
+
+# HASTA ACA LLEGA LO UTIL
+
+def validar_linea_importe(linea):
+    hijos = linea.get_hijos()
     es_valido = True
     i = 0
     estructura = [['SÍMBOLO ESPECIAL','#'],
@@ -224,76 +309,5 @@ def validar_comentario_multilinea(codigo,num_linea):
     """
     return None
 
-""" FUNCIONAL
-def simplificar_linea(linea):
-    hijos = linea.get_hijos()
-    nueva_linea = linea
-    i = 0
-    while i <= len(hijos)-1:
-        if hijos[i].valor[0][0] == 'OPERADOR MATEMÁTICO':
-            aux = eAtomica.validar_operacion_matematica(linea,i-1,i+1)
-            if aux != None:
-                nueva_linea = simplificar_linea(aux)
-        
-        i += 1
-    return nueva_linea
-"""
 
-def simplificar_linea(linea):
-    hijos = linea.get_hijos()
-    nueva_linea = linea
-    i = 0
-    while i <= len(hijos)-1:
-        if hijos[i].valor[0][0] == 'OPERADOR MATEMÁTICO':
-            aux = eAtomica.validar_operacion_matematica(linea,i-1,i+1)
-            if aux != None:
-                nueva_linea = simplificar_linea(aux)
 
-        elif hijos[i].valor[0][0] == 'PALABRA RESERVADA':
-            aux = eAtomica.validar_declaracion_variable_parametros(linea, i, i+1)
-            if aux != None:
-                nueva_linea = simplificar_linea(aux)
-
-        elif hijos[i].valor[0][0] == 'OPERADOR COMPARACIÓN':
-            aux = eAtomica.validar_comparacion(linea,i-1,i+1)
-            if aux != None:
-                nueva_linea = simplificar_linea(aux)
-
-        elif hijos[i].valor[0][0] == 'CARÁCTER INC-DEC':
-            aux = eAtomica.validar_incremental_decremental(linea,i-1,i)
-            if aux != None:
-                nueva_linea = simplificar_linea(aux)
-        #
-        elif hijos[i].valor[0][0] == 'LITERAL DE CADENA':
-            aux = cArbol.construir_cadena(linea)
-            if aux != None:
-                nueva_linea = simplificar_linea(aux)
-
-        elif hijos[i].valor[0][0] == 'OPERADOR LÓGICO':
-            aux = eAtomica.validar_condicion(linea,i-1,i+1)
-            if aux != None:
-                nueva_linea = simplificar_linea(aux)
-
-        elif hijos[i].valor[0][0] == 'SÍMBOLO ESPECIAL' and hijos[i].valor[1][0] == '(':
-            aux = eAtomica.validar_parametro(linea, i+1, i+3) or eAtomica.validar_argumento(linea, i+1, i+3) or eAtomica.validar_argumento_printf(linea, i + 1, i + 3)
-            if aux != None:
-                nueva_linea = simplificar_linea(aux)
-
-        i += 1
-    return nueva_linea
-
-def validar_EstructuraGrande_Auxiliar(linea):
-    hijos = linea.get_hijos()
-    nueva_linea = linea
-    i = 0
-    while i <= len(hijos)-1:
-        #if validar_printf(linea):
-        #    print(f"Es válida la linea {linea.valor[1][0]}")
-        #else:
-        #    print(f"No es válida la linea {linea.valor[1][0]}")
-        if validar_declaracion_funcion(linea):
-            print(f"Es válida la linea {linea.valor[1][0]}")
-        else:
-            print(f"No es válida la linea {linea.valor[1][0]}")
-        i += 1
-    return nueva_linea
