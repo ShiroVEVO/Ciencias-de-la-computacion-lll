@@ -12,8 +12,8 @@ Las lineas pueden ser:
 - asignación
 - declaracion
 - (HECHO) importe
-- declaracion de funcion
-- llamado de funcion 
+- (HECHO) declaracion de funcion
+- (HECHO) llamado de funcion 
 - (HECHO) retorno
 - (HECHO) Comentario de una linea
 - (HECHO) Comentario Multilinea
@@ -123,35 +123,49 @@ def validar_asignacion(raiz):
 """validar_declaracion_funcion"""
 def validar_declaracion_funcion(raiz):
     hijos = raiz.get_hijos()
-
-    estructura = [['DECLARACIÓN VARIABLE/PARAMETROS'], ['SÍMBOLO ESPECIAL'], ['ARGUMENTOS'],
-                  ['SÍMBOLO ESPECIAL'], ['SÍMBOLO ESPECIAL']]
-    estructura2 = [['DECLARACIÓN VARIABLE/PARAMETROS'], ['SÍMBOLO ESPECIAL'], ['ARGUMENTOS'],
+    es_valido = True
+    estructura = [['DECLARACIÓN VARIABLE/PARAMETROS'],
+                  ['SÍMBOLO ESPECIAL'],
+                  ['PARAMETRO', 'DECLARACIÓN VARIABLE/PARAMETROS'],
+                  ['SÍMBOLO ESPECIAL'],
+                  ['SÍMBOLO ESPECIAL']]
+    estructura2 = [['DECLARACIÓN VARIABLE/PARAMETROS'],
+                   ['SÍMBOLO ESPECIAL'],
+                   ['PARAMETRO', 'DECLARACIÓN VARIABLE/PARAMETROS'],
+                   ['SÍMBOLO ESPECIAL']]
+    estructura3 = [['DECLARACIÓN VARIABLE/PARAMETROS'],
+                   ['SÍMBOLO ESPECIAL'],
+                   ['SÍMBOLO ESPECIAL']]
+    estructura4 = [['DECLARACIÓN VARIABLE/PARAMETROS'],
+                   ['SÍMBOLO ESPECIAL'],
+                   ['SÍMBOLO ESPECIAL'],
                    ['SÍMBOLO ESPECIAL']]
 
-    if eAtomica.validar_estructura(estructura, hijos) or eAtomica.validar_estructura(estructura2, hijos):
+    if eAtomica.validar_estructura(estructura, hijos) or eAtomica.validar_estructura(estructura2, hijos)\
+            or eAtomica.validar_estructura(estructura3, hijos) or eAtomica.validar_estructura(estructura4, hijos):
         if not hijos[1].valor[1][0] == '(' and not hijos[3].valor[1][0] == ')':
-            return None
+            return not es_valido
         else:
-            return raiz
+            return es_valido
     else:
-        return None
+        return not es_valido
 
-"""validar_llamada_funcion"""
-def validar_llamada_funcion(raiz):
+def validar_printf(raiz):
     hijos = raiz.get_hijos()
-
-    estructura = [['IDENTIFICADOR'], ['SÍMBOLO ESPECIAL'],
-                  ['LLAMADA FUNCION', 'ARGUMENTOS', ],
-                  ['SÍMBOLO ESPECIAL'], ['CARÁCTER PUNTUACIÓN']]
+    es_valido = True
+    estructura = [['IDENTIFICADOR'],
+                  ['SÍMBOLO ESPECIAL'],
+                  ['ARGUMENTO', 'CADENA', 'IDENTIFICADOR', 'OPERACIÓN MATEMATICA', 'NUMERO ENTERO', 'NUMERO FLOTANTE',],
+                  ['SÍMBOLO ESPECIAL'],
+                  ['CARÁCTER PUNTUACIÓN']]
 
     if eAtomica.validar_estructura(estructura, hijos):
-        if not hijos[1].valor[1][0] == '(' and not hijos[3].valor[1][0] == ')' and not hijos[4].valor[1][0] == ';':
-            return None
+        if not hijos[0].valor[1][0] == 'printf' and not hijos[1].valor[1][0] == '(' and not hijos[3].valor[1][0] == ')' and not hijos[4].valor[1][0] == ';':
+            return not es_valido
         else:
-            return raiz
+            return es_valido
     else:
-        return None
+        return not es_valido
 
 ################
 def simplificar_op_matematica(linea):
@@ -171,7 +185,7 @@ def simplificar_declaracion(linea):
     nueva_linea = linea
     i = 0
     while i <= len(hijos)-1:
-        if hijos[i].valor[0][0] == 'PALABRA RESERVADA': 
+        if hijos[i].valor[0][0] == 'PALABRA RESERVADA':
             aux = eAtomica.validar_declaracion_variable_parametros(nueva_linea, i, i+1)
             if aux != None:
                 nueva_linea = simplificar_declaracion(aux)
@@ -183,7 +197,7 @@ def simplificar_comparacion(linea):
     nueva_linea = linea
     i = 0
     while i <= len(hijos)-1:
-        if hijos[i].valor[0][0] == 'OPERADOR COMPARACIÓN':  
+        if hijos[i].valor[0][0] == 'OPERADOR COMPARACIÓN':
             aux = eAtomica.validar_comparacion(nueva_linea,i-1,i+1)
             if aux != None:
                 asa.imprimir_asa(aux)
@@ -200,7 +214,7 @@ def simplificar_incremental_decremental(linea):
             aux = eAtomica.validar_incremental_decremental(nueva_linea,i-1,i)
             if aux != None:
                 nueva_linea = simplificar_incremental_decremental(aux)
-        i += 1        
+        i += 1
     return nueva_linea
 
 def simplificar_literal_cadena(linea):
@@ -220,7 +234,7 @@ def simplificar_condicion(linea):
     nueva_linea = linea
     i = 0
     while i <= len(hijos)-1:
-        if hijos[i].valor[0][0] == 'OPERADOR LÓGICO':             
+        if hijos[i].valor[0][0] == 'OPERADOR LÓGICO':
             aux = eAtomica.validar_condicion(nueva_linea,i-1,i+1)
             if aux != None:
                 asa.imprimir_asa(aux)
@@ -228,13 +242,27 @@ def simplificar_condicion(linea):
         i += 1
     return nueva_linea
 
-def simplificar_linea(linea): 
+def simplificar_argumentos_parametros(linea):
+    hijos = linea.get_hijos()
+    nueva_linea = linea
+    i = 0
+    while i <= len(hijos) - 1:
+        if hijos[i].valor[0][0] == 'SÍMBOLO ESPECIAL' and hijos[i].valor[1][0] == '(':
+            aux = eAtomica.validar_parametro(linea, i+1, i+3) or eAtomica.validar_argumento(linea, i+1, i+3) \
+                  or eAtomica.validar_argumento_printf(linea, i+1, i+3)
+            if aux != None:
+                nueva_linea = simplificar_linea(aux)
+        i += 1
+    return nueva_linea
+
+def simplificar_linea(linea):
     nueva_linea = simplificar_op_matematica(linea)
     nueva_linea = simplificar_declaracion(nueva_linea)
     nueva_linea = simplificar_comparacion(nueva_linea)
     nueva_linea = simplificar_incremental_decremental(nueva_linea)
     nueva_linea = simplificar_literal_cadena(nueva_linea)
     nueva_linea = simplificar_condicion(nueva_linea)
+    nueva_linea = simplificar_argumentos_parametros(nueva_linea)
     return nueva_linea
 
 # HASTA ACA LLEGA LO UTIL
@@ -258,7 +286,7 @@ def validar_linea_importe(linea):
             return not es_valido
         i += 1
     return es_valido
-  
+    
 def validar_linea_retorno(raiz):
     hijos = raiz.get_hijos()
     es_valido = True

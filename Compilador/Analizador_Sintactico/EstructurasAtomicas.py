@@ -134,7 +134,8 @@ def validar_declaracion_variable_parametros(raiz, inicial, final):
     estructura = [['PALABRA RESERVADA'], ['IDENTIFICADOR']]
     if validar_estructura(estructura, hijos):
         if hijos[0].valor[1][0] != 'char' and hijos[0].valor[1][0] != 'double' and hijos[0].valor[1][0] != 'float' and \
-                hijos[0].valor[1][0] != 'int' and hijos[0].valor[1][0] != 'long' and hijos[0].valor[1][0] != 'short':
+                hijos[0].valor[1][0] != 'int' and hijos[0].valor[1][0] != 'long' and hijos[0].valor[1][0] != 'short'\
+                and hijos[0].valor[1][0] != 'void':
             return None
         else:
             return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
@@ -203,8 +204,9 @@ variable o de función, un numero entero, un numero flotante o una cadena).
 def validar_argumento(raiz, inicial, final):
     hijos = raiz.hijos[inicial:final + 1]
     valor_papa = [['ARGUMENTO'], ['']]
-    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'CADENA'],
-                  ['CARÁCTER PUNTUACIÓN']]
+    estructura = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'CADENA', 'ARGUMENTO'],
+                  ['CARÁCTER PUNTUACIÓN'],
+                  ['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'CADENA', 'ARGUMENTO']]
     estructura2 = [['IDENTIFICADOR', 'NUMERO ENTERO', 'NUMERO FLOTANTE', 'CADENA']]
     if validar_estructura(estructura, hijos) or validar_estructura(estructura2, hijos):
         if len(hijos) > 1 and not hijos[1].valor[1][0] == ",":
@@ -215,12 +217,13 @@ def validar_argumento(raiz, inicial, final):
         return None
 
 """validar_argumentos de printf, donde solo se pueden identificadores y cadenas"""
-def validar_argumentos_printf(raiz, inicial, final):
+def validar_argumento_printf(raiz, inicial, final):
     hijos = raiz.hijos[inicial:final + 1]
     valor_papa = [['ARGUMENTO'], ['']]
-    estructura = [['IDENTIFICADOR', 'CADENA'], ['OPERADOR MATEMÁTICO']]
-    estructura2 = [['IDENTIFICADOR']]
-    if validar_estructura(estructura, hijos) or validar_estructura(estructura2, hijos):
+    estructura = [['IDENTIFICADOR', 'CADENA', 'ARGUMENTO', 'NUMERO ENTERO', 'NUMERO FLOTANTE'],
+                  ['OPERADOR MATEMÁTICO'],
+                  ['IDENTIFICADOR', 'CADENA', 'ARGUMENTO', 'NUMERO ENTERO', 'NUMERO FLOTANTE']]
+    if validar_estructura(estructura, hijos):
         if len(hijos) > 1 and not hijos[1].valor[1][0] == "+":
             return None
         else:
@@ -228,20 +231,36 @@ def validar_argumentos_printf(raiz, inicial, final):
     else:
         return None
 
-"""Valida cuando muchos argumentos estan juntos"""
-def validar_argumentos(raiz, inicial, final):
+def validar_parametro(raiz, inicial, final):
     hijos = raiz.hijos[inicial:final + 1]
-    valor_papa = [['ARGUMENTOS'], ['']]
-    for hijo in hijos:
-        if hijo == [['ARGUMENTO'], ['']]:
-            final = inicial
-    return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
+    valor_papa = [['PARAMETRO'], ['']]
+    estructura = [['DECLARACIÓN VARIABLE/PARAMETROS', 'PARAMETRO'],
+                  ['CARÁCTER PUNTUACIÓN'],
+                  ['DECLARACIÓN VARIABLE/PARAMETROS', 'PARAMETRO']]
+    if validar_estructura(estructura, hijos):
+        if len(hijos) > 1 and not hijos[1].valor[1][0] == ",":
+            return None
+        else:
+            return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
+    else:
+        return None
 
-"""Valida cuando muchos argumentos estan juntos"""
-def validar_parametros(raiz, inicial, final):
+"""validar_llamada_funcion"""
+def validar_llamada_funcion(raiz, inicial, final):
     hijos = raiz.hijos[inicial:final + 1]
-    valor_papa = [['ARGUMENTOS'], ['']]
-    for hijo in hijos:
-        if hijo == [['DECLARACIÓN VARIABLE/PARAMETROS'], ['']]:
-            final = inicial
-    return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
+    valor_papa = [['LLAMADA FUNCION'], ['']]
+    estructura = [['IDENTIFICADOR'],
+                  ['SÍMBOLO ESPECIAL'],
+                  ['LLAMADA FUNCION', 'ARGUMENTO'],
+                  ['SÍMBOLO ESPECIAL'],
+                  ['CARÁCTER PUNTUACIÓN']]
+
+    if validar_estructura(estructura, hijos):
+        if not hijos[1].valor[1][0] == '(' and not hijos[3].valor[1][0] == ')' and not hijos[4].valor[1][0] == ';':
+            return None
+        else:
+            return asa.crear_nodo_padre(raiz, inicial, final, valor_papa)
+    else:
+        return None
+
+
