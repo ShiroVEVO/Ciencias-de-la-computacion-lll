@@ -1,5 +1,5 @@
-from Compilador.Analizador_Sintactico import EstructurasAtomicas as eAtomicas
-from Compilador.Recursos import ArbolSintaxisAbstracta as asa
+from Analizador_Sintactico import EstructurasAtomicas as eAtomicas
+from Recursos import ArbolSintaxisAbstracta as asa
 def construir_cadena(raiz):
     hijos = raiz.get_hijos()
     while True:

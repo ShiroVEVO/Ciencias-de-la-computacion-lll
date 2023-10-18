@@ -7,7 +7,7 @@ from Analizador_Sintactico import EstructurasAtomicas as eAtomica
 from Analizador_Sintactico import ConstruccionArbol as cArbol
 
 # ---------------- PRUEBAS ANALIZADOR LEXICO --------------------
-codigo = r.leer_archivo('../Compilador/archivo.c')
+codigo = r.leer_archivo('Compilador/archivo.c')
 
 tokens = []
 for linea in codigo:
@@ -17,6 +17,10 @@ x = asa.crear_asa_programa(codigo)
 hijos = x.get_hijos()
 for hijo in hijos:
     asa.imprimir_asa(analizadors.simplificar_linea(hijo))
+
+print(analizadors.validar_linea_declaración(analizadors.simplificar_declaracion(asa.crear_asa_linea(s.separador(codigo[1]),1))))
+
+
 
 
 
