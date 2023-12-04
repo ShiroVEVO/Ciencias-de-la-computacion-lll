@@ -17,6 +17,28 @@ def contar_elemento(lista, campo):
 
     return contador
 
+def formatear_archivo(lineas):
+    codigo_procesado = []
+    pila_corchetes = []
+
+    for linea in lineas:
+        linea = linea.replace(';', '').replace('"', '')
+        if any(tipo in linea for tipo in ['int', 'float', 'char', 'long', 'short']):
+            if '=' not in linea:
+                continue
+            else:
+                codigo_procesado.append(linea)
+        if '{' in linea:
+            pila_corchetes.append('{')
+
+        if pila_corchetes:
+            codigo_procesado.append(linea)
+
+            if '}' in linea:
+                pila_corchetes.pop()
+
+    return codigo_procesado
+
 """ leer_archivo:
 
 Recibe por parametro una ruta absoluta "ruta_archivo" desde la raiz del proyecto es decir, 
@@ -36,18 +58,24 @@ tiene nada más allá de este generaría un arreglo con 2 posiciones la linea y 
 las agrega al arreglo "codigo"
 """
 
-def leer_archivo(ruta_archivo): 
-    codigo = []
-    with open(ruta_archivo, 'r') as archivo:
-        for linea in archivo:
-            linea = linea.strip(); # omite espacios iniciales y finales
-            if ";" in linea and not "for" in linea:
-                linea = linea.replace(";", ";@")
-                lineas = linea.split("@")
-                for linea in lineas:
-                    if linea:
-                        codigo.append(linea)
-            else: 
-                if linea:
-                    codigo.append(linea)
-    return codigo
+def leerArchivo(nombre):
+    lineas = []
+    FormatLines = ([])
+
+    try:
+        file = open(nombre, 'r')
+        while True:
+            linea = str(file.readline())
+            if linea:
+
+                linea = linea.replace('\n', '')
+                FormatLines.append(linea)
+                linea = linea.replace('\t', '')
+                # if linea != '' and linea != '\n':
+                lineas.append(linea)
+            else:
+                break
+        file.close()
+        return lineas
+    except FileNotFoundError:
+        print("Error con el archivo")

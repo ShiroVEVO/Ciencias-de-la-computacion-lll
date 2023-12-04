@@ -26,6 +26,5 @@ def separador(cadena):
             tokens.append(token)
         else:
             i += 1
-
     return tokens
 
