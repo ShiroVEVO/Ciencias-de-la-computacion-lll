@@ -1,7 +1,13 @@
-#include <stdio.h>
-int suma(int a,int b){
-    return a+b;
+//#include <stdio.h>
+int x = 40;
+
+void funcion(float v, string n){
+	if(v > 0.0){
+		n = "Mayor";
+		x = x + 5;
+	}
 }
+/*
 int maximo(int a, int b, int c, int d){
     if(a > b){
         return a;
@@ -37,8 +43,10 @@ int main() {
     Se usa la funcion imprimirSerie
         todo dentro de un comentario
         con una inicialización diferente
-    *//*
+
     printf("Imprimir serie del 1 al 10:\n");
-    imprimirSerie(1, 10);
+    imprimirSerie(1, 10)
+    ;
     return 0;
 }
+*/
